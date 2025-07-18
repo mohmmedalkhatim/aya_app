@@ -1,0 +1,38 @@
+[package]
+name = "school_system"
+version = "0.0.0"
+description = "A Tauri App"
+authors = ["you"]
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sea-orm = { version = "1", features = [
+    "sqlx-sqlite",
+    "runtime-tokio-native-tls",
+] }
+tauri-plugin-store = "2"
+sea-orm-macros = "1"
+base64 = "0.13"
+thiserror = "1.0"
+sea-query = "0.23"
+tokio = { version = "1", features = ["full"] }
+async-std = "1.10"
+migration = { path = "./migration" }
+tauri-plugin-shell = "2"
+chrono = "0.4.39"
+rand = "0.9.1"
+
+[features]
+# This feature is used for production builds or when a dev server is not specified, DO NOT REMOVE!!
+custom-protocol = ["tauri/custom-protocol"]
+
+[target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
+tauri-plugin-single-instance = "2"

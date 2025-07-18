@@ -1,0 +1,32 @@
+{
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1420"
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/school_system.ico"
+    ]
+  },
+  "productName": "school_system",
+  "mainBinaryName": "school_system",
+  "version": "0.0.0",
+  "identifier": "school_system",
+  "plugins": {},
+  "app": {
+    "security": {
+      "csp": null
+    },
+    "windows": [
+      {
+        "title": "school_system",
+        "width": 1300,
+        "height": 600
+      }
+    ]
+  }
+}
