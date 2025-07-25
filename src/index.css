@@ -1,0 +1,183 @@
+@import 'tailwindcss';
+
+
+html.lenis,
+html.lenis body {
+  height: auto;
+  overflow-y: auto;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+*{
+  border-color: #e3e3e390 !important;
+}
+
+:root {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  overflow-y: visible;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+@layer components {
+  .commit_img {
+    @apply h-14 bg-[url(/imgs/self.png)] w-14 bg-cover bg-no-repeat rounded-full;
+  }
+
+  .commit_container {
+    max-width: 30rem;
+    @apply flex flex-col py-12 items-center justify-center gap-8 border;
+  }
+
+  .collation_container {
+    grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+    @apply grid;
+  }
+
+  .collation_elements {
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    @apply grid;
+  }
+
+  .element {
+    @apply border;
+  }
+
+  .products {
+    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+    @apply grid py-8;
+  }
+
+  .filter {
+    @apply flex flex-col;
+  }
+
+  .services_container {
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+    column-gap: 4rem;
+    row-gap: 8rem;
+    @apply w-full h-auto grid py-24;
+  }
+
+  .products_wib {
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+
+    @apply grid;
+  }
+
+  .hero_content {
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    @apply grid;
+  }
+
+  .hero_call_to_action {
+    @apply flex flex-col gap-8;
+  }
+  .three_cols_grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(16rem,1fr));
+  }
+
+  h1 {
+    @apply text-5xl sm:text-5xl md:text-5xl font-bold text-gray-900;
+  }
+
+  h2 {
+    @apply text-4xl sm:text-5xl md:text-6xl font-semibold text-gray-900;
+  }
+
+  h3 {
+    @apply text-3xl sm:text-4xl md:text-5xl font-medium text-gray-900;
+  }
+
+  h4 {
+    @apply text-2xl sm:text-3xl md:text-4xl font-medium text-gray-900;
+  }
+
+  h5 {
+    @apply text-xl sm:text-2xl md:text-3xl font-normal text-gray-900;
+  }
+
+  h6 {
+    @apply text-lg sm:text-xl md:text-2xl font-light text-gray-900;
+  }
+
+  p {
+    @apply text-lg;
+  }
+
+  .orders {
+    @apply p-4 w-[20rem] h-[10rem] relative;
+  }
+
+  .order {
+    @apply absolute w-[10rem] rounded;
+  }
+}
+
+.carousel {
+  display: flex;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  gap: 1rem;
+  padding:1rem;
+  scroll-behavior: smooth;
+  
+  li {
+    border-radius: 3px;
+    min-width: 20rem;
+    min-height: 20rem;
+  }
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+@font-face {
+  font-family: Alro;
+  src: url(/fonts/Quicksand_wght.ttf);
+}
+
+main {}
+
+@layer components {
+  .content {
+    @apply px-8 sm:px-12 md:pl-40;
+  }
+  .cart_header{
+  }
+  header {
+    @apply fixed top-0 z-50;
+  }
+  input {
+    @apply py-2 px-3 rounded-md border;
+
+    &:focus {
+      outline: none;
+    }
+  }
+  footer {
+    @apply bottom-0 w-full h-32 text-sm border-t py-4;
+  }
+  .testimonies_container{
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(20rem,1fr));
+  }
+}
