@@ -1,10 +1,11 @@
 import client from "react-dom/client";
-import App from "./app";
 import React from "react";
+import { RouterProvider } from "react-router-dom";
+import router from "./router";
 
 
-let react = client.createRoot(document.getElementById("root") as HTMLDivElement).render(
+client.createRoot(document.getElementById("root") as HTMLDivElement).render(
     <React.StrictMode>
-        <App />
+        <RouterProvider router={router}/>
     </React.StrictMode>
 )
