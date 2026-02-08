@@ -11,7 +11,8 @@ html.lenis body {
   box-sizing: border-box;
   margin: 0;
 }
-*{
+
+* {
   border-color: #e3e3e390 !important;
 }
 
@@ -67,23 +68,14 @@ html.lenis body {
     @apply w-full h-auto grid py-24;
   }
 
-  .products_wib {
-    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
-
-    @apply grid;
-  }
-
-  .hero_content {
-    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-    @apply grid;
-  }
 
   .hero_call_to_action {
     @apply flex flex-col gap-8;
   }
-  .three_cols_grid{
+
+  .three_cols_grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(16rem,1fr));
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
   }
 
   h1 {
@@ -128,9 +120,9 @@ html.lenis body {
   overflow-x: hidden;
   overflow-y: hidden;
   gap: 1rem;
-  padding:1rem;
+  padding: 1rem;
   scroll-behavior: smooth;
-  
+
   li {
     border-radius: 3px;
     min-width: 20rem;
@@ -159,13 +151,23 @@ main {}
 
 @layer components {
   .content {
-    @apply px-8 sm:px-12 md:pl-40;
+    @apply px-4;
   }
-  .cart_header{
+
+  .dashboard_head {
+    @apply border
   }
+
+  .cart_header {}
+
+  .nav_link {
+    @apply border-b px-3 py-2 hover:bg-[#e3e3e340] rounded;
+  }
+
   header {
     @apply fixed top-0 z-50;
   }
+
   input {
     @apply py-2 px-3 rounded-md border;
 
@@ -173,11 +175,13 @@ main {}
       outline: none;
     }
   }
+
   footer {
     @apply bottom-0 w-full h-32 text-sm border-t py-4;
   }
-  .testimonies_container{
+
+  .testimonies_container {
     display: grid;
-    grid-template-columns: repeat(auto-fill,minmax(20rem,1fr));
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
   }
 }
