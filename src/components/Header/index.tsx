@@ -1,12 +1,12 @@
 import { AllHTMLAttributes } from 'react';
-import { IconBasket, IconMenu2, IconSearch, IconUser } from '@tabler/icons-react';
+import { IconBasket, IconMenu2, IconSettings, IconSettingsFilled, IconUser } from '@tabler/icons-react';
 import MyLink from './Link';
 import { useAside } from '../../context/Aside';
 
 let links = [
   { name: 'Dashboard', url: '/' },
-  { name: 'products', url: '/products' },
-  { name: 'collation', url: '/collations' },
+  { name: 'payments', url: '/payments' },
+  { name: 'courses', url: '/courses' },
   { name: 'about', url: '/about' },
 ];
 let info = [
@@ -35,7 +35,7 @@ function Header (props: Header_Props) {
       </div>
       <div className='flex md:hidden content items-center justify-between gap-4 '>
         <div>logo</div>
-        <IconMenu2 onClick={openAsdie} size={'1.6rem'} />
+        <IconSettingsFilled onClick={openAsdie} size={'1.4rem'} />
       </div>
     </header>
   );
