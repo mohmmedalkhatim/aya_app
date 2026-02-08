@@ -24,9 +24,11 @@
     "windows": [
       {
         "title": "school_system",
-        "width": 1300,
-        "height": 600
+        "width": 520,
+        "height": 900,
+        "maxWidth": 520
       }
     ]
+    
   }
 }
