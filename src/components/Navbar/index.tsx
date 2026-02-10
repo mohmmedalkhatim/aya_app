@@ -1,12 +1,12 @@
-import { IconCalculator, IconCalendar, IconCalendarEvent, IconDashboard, IconHome, IconUser } from "@tabler/icons-react"
+import { IconCalculator,  IconCalendarEvent, IconDashboard, IconUser } from "@tabler/icons-react"
 import NavLink from "./NavLink/index"
 import { useState } from "react"
 
 let list = [
   { name: <IconDashboard size={"1.8rem"} />, url: "/" },
   { name: <IconCalendarEvent size={"1.8rem"} />, url: "/sign_in" },
-  { name: <IconCalculator size={"1.8rem"} />, url: "/calculator" },
-  { name: <IconUser size={"1.8rem"} />, url: "/profile" },
+  { name: <IconCalculator size={"1.8rem"} />, url: "/" },
+  { name: <IconUser size={"1.8rem"} />, url: "/" },
 ]
 
 

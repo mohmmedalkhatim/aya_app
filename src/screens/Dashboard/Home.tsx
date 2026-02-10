@@ -1,7 +1,6 @@
 import { useState } from "react"
 import { storage } from "../../main"
 import { useAsync } from "react-use"
-import { IconDropCircle, IconDroplet, IconDropletFilled, IconScan } from "@tabler/icons-react"
 import DashboardHeader from "./components/header"
 import Events from "./components/events"
 

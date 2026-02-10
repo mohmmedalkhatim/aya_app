@@ -5,7 +5,7 @@ type icon =  JSX.Element
 
 function NavLink({ name, url, }: { name: icon, url: string }) {
   return (
-    <Link to={url} className="nav_link " >
+    <Link to={url} className="nav_link" >
       {name }
     </Link>
   )
