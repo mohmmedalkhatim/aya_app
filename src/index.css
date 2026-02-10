@@ -159,7 +159,9 @@ main {}
   }
 
   .cart_header {}
-
+  center{
+    @apply flex items-center justify-center;
+  }
   .nav_link {
     @apply border-b px-3 py-2 hover:bg-[#e3e3e340] rounded;
   }

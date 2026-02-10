@@ -29,6 +29,9 @@ migration = { path = "./migration" }
 tauri-plugin-shell = "2"
 chrono = "0.4.39"
 rand = "0.9.1"
+google-cloud-auth = "1.5.0"
+reqwest = "0.13.2"
+firebase-rust-sdk = "0.1.0-beta"
 
 [features]
 # This feature is used for production builds or when a dev server is not specified, DO NOT REMOVE!!

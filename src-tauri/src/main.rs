@@ -6,10 +6,11 @@ use sea_orm::DatabaseConnection;
 use std::sync::Arc;
 use tauri::{generate_handler, path::BaseDirectory, Manager};
 mod app;
-
+mod firebase;
 struct DbConnection {
     db: Option<DatabaseConnection>,
 }
+
 
 #[tokio::main]
 async fn main() {

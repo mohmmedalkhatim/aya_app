@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "824517900422",
+    "project_id": "aya-app-33a9e",
+    "storage_bucket": "aya-app-33a9e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:824517900422:android:4440409905ea09acc63907",
+        "android_client_info": {
+          "package_name": "com.aya.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "824517900422-epok1q2o1agikdvm2sdo3d7a8jinv652.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvoFoFTNEeygs_LLdrHNYGyhXVFv_8bKY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "824517900422-epok1q2o1agikdvm2sdo3d7a8jinv652.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

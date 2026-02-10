@@ -12,10 +12,10 @@
       "icons/school_system.ico"
     ]
   },
-  "productName": "school_system",
-  "mainBinaryName": "school_system",
+  "productName": "aya_app",
+  "mainBinaryName": "aya_app",
   "version": "0.0.0",
-  "identifier": "school_system",
+  "identifier": "com.aya.app",
   "plugins": {},
   "app": {
     "security": {
@@ -23,7 +23,7 @@
     },
     "windows": [
       {
-        "title": "school_system",
+        "title": "com.aya.app",
         "width": 520,
         "height": 900,
         "maxWidth": 520
