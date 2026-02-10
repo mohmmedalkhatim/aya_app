@@ -15,7 +15,7 @@ export function Home() {
     })
   }, [])
   return (
-    <main className="pt-[5rem] content">
+    <main className="container">
       <DashboardHeader/>
       <Events/>
     </main>

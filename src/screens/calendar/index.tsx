@@ -1,6 +1,6 @@
 function Calendar() {
   return (
-    <div>Calendar</div>
+    <main className="container">Calendar</main>
   )
 }
 export default Calendar

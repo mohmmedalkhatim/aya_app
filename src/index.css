@@ -153,15 +153,20 @@ main {}
   .content {
     @apply px-4;
   }
+  .container{
+    @apply pt-[5rem] px-4;
+  }
 
   .dashboard_head {
     @apply border
   }
 
   .cart_header {}
-  center{
+
+  center {
     @apply flex items-center justify-center;
   }
+
   .nav_link {
     @apply border-b px-3 py-2 hover:bg-[#e3e3e340] rounded;
   }

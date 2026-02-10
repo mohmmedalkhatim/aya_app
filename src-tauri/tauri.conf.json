@@ -24,9 +24,8 @@
     "windows": [
       {
         "title": "com.aya.app",
-        "width": 520,
-        "height": 900,
-        "maxWidth": 520
+        "width": 460,
+        "height": 600
       }
     ]
     

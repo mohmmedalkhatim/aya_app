@@ -1,6 +1,6 @@
 function Calculator() {
   return (
-    <div>Calculator</div>
+    <main className="container">Calculator</main>
   )
 }
 export default Calculator

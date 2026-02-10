@@ -18,7 +18,7 @@ type Header_Props = {} & AllHTMLAttributes<HTMLDivElement>;
 function Header (props: Header_Props) {
   let openAsdie = useAside(state => state.toggle);
   return (
-    <header className={'border-b py-4 text-sm  w-full bg-white '} {...props}>
+    <header className={'border-b py-4 text-sm  fixed top-0 w-full bg-white '} {...props}>
       <div className='md:flex hidden content w-full pt-4 flex-col gap-4'>
         <nav className='flex justify-between w-full'>
           <div className='flex list-none gap-4 font-semibold'>

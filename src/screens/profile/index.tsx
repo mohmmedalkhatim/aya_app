@@ -1,6 +1,6 @@
 function Profile() {
   return (
-    <div>Profile</div>
+    <main className="container">Profile</main>
   )
 }
 export default Profile
