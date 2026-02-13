@@ -29,7 +29,7 @@ async fn main() {
         .plugin(tauri_plugin_store::Builder::new().build())
         .plugin(tauri_plugin_shell::init())
         .invoke_handler(generate_handler![
-            app::areas_control,
+            app::events_control,
         ])
         .setup(|app| {
             let database_url = app

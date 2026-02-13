@@ -32,6 +32,7 @@
     "@tiptap/extension-underline": "^2.11.5",
     "@tiptap/react": "^2.11.5",
     "@tiptap/starter-kit": "^2.11.5",
+    "date-fns": "^4.1.0",
     "dayjs": "^1.11.19",
     "gsap": "^3.12.7",
     "lenis": "^1.1.20",

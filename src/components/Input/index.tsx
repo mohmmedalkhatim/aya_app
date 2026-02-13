@@ -193,7 +193,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className={fullWidth ? 'w-full' : ''} >
         {label && (
-          <label className="mb-2 text-sm flex font-medium relative">
+          <label className="text-sm flex font-medium relative">
             {isPassword && (
               <div
                 className="flex items-center justify-center text-gray-500"
@@ -228,7 +228,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
           {/* Right section */}
           <div
-            className="absolute inset-y-0 right-0 flex items-center justify-center gap-1"
+            className="absolute inset-y-0 right-0 flex items-center justify-center "
             style={{ width: rightSectionWidth }}
           >
             {loading && <IconLoader2 size={16} className="animate-spin" />}

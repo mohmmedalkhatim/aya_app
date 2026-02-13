@@ -1,5 +1,5 @@
-pub mod areas;
+pub mod events;
 
-pub use areas::{
-    __cmd__areas_control,areas_control
+pub use events::{
+    __cmd__events_control,events_control
 };

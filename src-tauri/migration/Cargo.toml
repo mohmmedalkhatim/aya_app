@@ -10,6 +10,7 @@ path = "src/lib.rs"
 
 [dependencies]
 async-std = { version = "1", features = ["attributes", "tokio1"] }
+chrono = "0.4.43"
 sea-orm = { version = "1", features = [
   "sqlx-sqlite",
   "runtime-tokio-native-tls",
