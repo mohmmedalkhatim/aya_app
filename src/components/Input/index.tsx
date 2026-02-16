@@ -193,7 +193,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className={fullWidth ? 'w-full' : ''} >
         {label && (
-          <label className="text-sm flex font-medium relative">
+          <label className="text-sm flex 0 -translate-y-1 translate-x-2 font-medium relative">
             {isPassword && (
               <div
                 className="flex items-center justify-center text-gray-500"
@@ -207,9 +207,6 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         )}
 
         <div className="relative">
-          {/* Left section */}
-
-
           {/* Input */}
           <input
             ref={(node) => {

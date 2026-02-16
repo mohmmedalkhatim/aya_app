@@ -259,7 +259,7 @@ const RecurrenceInput = forwardRef<HTMLDivElement, DataInputProps>(({
   return (
     <div ref={ref} className={`space-y-2 ${className || ''}`}>
       <div className="flex items-center justify-between">
-        <label className="text-sm font-medium text-gray-700">
+        <label className="text-sm font-medium text-gray-700 -translate-y-1 translate-x-2">
           {itemLabel}
           {required && <span className="text-red-500 ml-1">*</span>}
         </label>

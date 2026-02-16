@@ -106,14 +106,13 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(({
   leftSection,
   
   maxHeight = 300,
-  portal = false,
   
   className = '',
   dropdownClassName = '',
   
   name,
   id
-}, ref) => {
+}) => {
   const generatedId = useId();
   const selectId = id || generatedId;
   const triggerId = `${selectId}-trigger`;
@@ -261,7 +260,6 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(({
   
   /* ───────────── Status Classes ───────────── */
   
-  const statusColor = error ? 'red' : success ? 'green' : warning ? 'yellow' : 'blue';
   const borderColorClass = error 
     ? 'border-red-300 focus:border-red-500' 
     : success 

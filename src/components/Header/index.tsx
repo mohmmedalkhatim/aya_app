@@ -1,5 +1,5 @@
 import { AllHTMLAttributes } from 'react';
-import { IconBasket, IconMenu2, IconSettings, IconSettingsFilled, IconUser } from '@tabler/icons-react';
+import { IconAdjustments, IconBasket, IconMenu2, IconSettings, IconSettingsFilled, IconUser } from '@tabler/icons-react';
 import MyLink from './Link';
 import { useAside } from '../../context/Aside';
 
@@ -15,7 +15,7 @@ let info = [
 ];
 type Header_Props = {} & AllHTMLAttributes<HTMLDivElement>;
 
-function Header (props: Header_Props) {
+function Header(props: Header_Props) {
   let openAsdie = useAside(state => state.toggle);
   return (
     <header className={'border-b py-4 text-sm  fixed top-0 w-full bg-white '} {...props}>
@@ -34,8 +34,16 @@ function Header (props: Header_Props) {
         </nav>
       </div>
       <div className='flex md:hidden content items-center justify-between gap-4 '>
-        <div>logo</div>
-        <IconSettingsFilled onClick={openAsdie} size={'1.4rem'} />
+        <div className='flex gap-4 items-center'>
+          <div className='bg-sky-400 rounded-full p-2'>
+            <IconUser color='white' />
+          </div>
+          <div>
+            <h5>Good evening</h5>
+            <div className='text-gray-400/80'>mohammed alkhatims</div>
+          </div>
+        </div>
+        <IconAdjustments className="-rotate-90" onClick={openAsdie} size={'1.6rem'} />
       </div>
     </header>
   );
