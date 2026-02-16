@@ -111,7 +111,9 @@ const SelectBox = forwardRef<HTMLDivElement, SelectProps>(({
             ? defaultValue
             : multiple ? [] : ''
     );
-
+    useEffect(() => {
+        handleOptionSelect({ value: 'Daily', label: 'Daily' })
+    }, [])
     const isControlled = controlledValue !== undefined;
     const currentValue = isControlled ? controlledValue : internalValue;
 

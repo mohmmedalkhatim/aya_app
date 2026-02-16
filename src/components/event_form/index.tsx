@@ -67,6 +67,7 @@ const EventForm: React.FC<EventFormProps> = ({
     onSubmit(formData);
   }, [formData, onSubmit]);
 
+
   /* ───────────── Select Options ───────────── */
 
   const statusOptions = useMemo(() => [
@@ -98,7 +99,7 @@ const EventForm: React.FC<EventFormProps> = ({
                 onTouchEnd={onCancel}
                 className="text-sm font-medium p-2 rounded-sm cursor-pointer   text-gray-700 active:bg-gray-200 touch-manipulation"
               >
-                <IconChevronLeft/>
+                <IconChevronLeft />
               </div>
             )}
             <h1 className="text-lg font-semibold text-gray-900">
@@ -122,37 +123,29 @@ const EventForm: React.FC<EventFormProps> = ({
       <div className="bg-white rounded-lg border flex gap-4 flex-col border-gray-200 p-4">
         <div className="space-y-4 flex flex-col gap-4">
 
-          <Input
-            type="text"
-            label="Title"
-            value={formData.summary}
-            onChange={(v) => handleChange('summary', v)}
-            placeholder="title"
-            fullWidth
-          />
+          <div className='flex flex-col gap-2'>
+            <DataInput
+              type="text"
+              label="MEDICATION DETAILS"
+              value={formData.summary}
+              onChange={(v) => handleChange("summary", v)}
+              placeholder="Medication Name (e.g., Metformin)"
+              fullWidth
+            />
 
 
-          <DataInput
-            type="text"
-            label="Description"
-            value={formData.description}
-            onChange={(v) => handleChange('description', v)}
-            placeholder="Event description and details"
-            size="lg"
-            fullWidth
-          />
+            <DataInput
+              type="text"
+              value={formData.description}
+              onChange={(v) => handleChange('description', v)}
+              placeholder="Dosage (e.g., 500mg)"
+              required
+              className='rounded-none'
+              size="lg"
+              fullWidth
+            />
+          </div>
 
-          <Select
-            label="Status"
-            options={statusOptions}
-            value={formData.status}
-            onChange={(v) => handleChange('status', v)}
-            placeholder="Select status"
-            size="lg"
-            fullWidth
-            clearable
-            leftSection={<IconClock size={18} />}
-          />
 
           <SelectBox
             label="type"
