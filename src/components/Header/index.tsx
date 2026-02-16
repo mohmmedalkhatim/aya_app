@@ -35,15 +35,14 @@ function Header(props: Header_Props) {
       </div>
       <div className='flex md:hidden content items-center justify-between gap-4 '>
         <div className='flex gap-4 items-center'>
-          <div className='bg-sky-400 rounded-full p-2'>
-            <IconUser color='white' />
-          </div>
           <div>
             <h5>Good evening</h5>
             <div className='text-gray-400/80'>mohammed alkhatims</div>
           </div>
         </div>
-        <IconAdjustments className="-rotate-90" onClick={openAsdie} size={'1.6rem'} />
+        <div className='bg-sky-400 rounded-full p-2'>
+          <IconUser color='white' />
+        </div>
       </div>
     </header>
   );

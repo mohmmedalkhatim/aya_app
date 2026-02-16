@@ -1,4 +1,4 @@
-import EventForm from './event_form'
+import EventForm from '../../components/event_form'
 function Calendar() {
   return (
     <main className="container px-0">

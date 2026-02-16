@@ -1,16 +1,18 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import {
+  IconChevronLeft,
+  IconChevronRight,
   IconClock,
   IconColorSwatch,
   IconDeviceFloppy,
   IconX
 } from '@tabler/icons-react';
-import DataInput from '../../../components/data_input';
-import Checkbox from '../../../components/checkbox';
-import Input from '../../../components/Input';
+import DataInput from '../data_input';
+import Checkbox from '../checkbox';
+import Input from '../Input';
 
-import Select from '../../../components/select';
-import SelectBox from '../../../components/BoxSelect';
+import Select from '../select';
+import SelectBox from '../BoxSelect';
 
 /* ───────────────────────────── Types ───────────────────────────── */
 
@@ -87,22 +89,24 @@ const EventForm: React.FC<EventFormProps> = ({
   return (
     <form onSubmit={handleSubmit} className="min-h-screen  pb-20">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-white  px-4 py-3">
+      <div className="sticky top-0 z-10 bg-white  px-2 py-3">
         <div className="flex items-center justify-between">
-          <h1 className="text-lg font-semibold text-gray-900">
-            {initialData ? 'Edit Event' : 'Add Medition'}
-          </h1>
-          <div className="flex items-center space-x-2">
+          <div className='flex items-center gap-2'>
             {onCancel && (
-              <button
-                type="button"
+              <div
                 onClick={onCancel}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg active:bg-gray-200 touch-manipulation"
-                disabled={isLoading}
+                onTouchEnd={onCancel}
+                className="text-sm font-medium p-2 rounded-sm cursor-pointer   text-gray-700 active:bg-gray-200 touch-manipulation"
               >
-                Cancel
-              </button>
+                <IconChevronLeft/>
+              </div>
             )}
+            <h1 className="text-lg font-semibold text-gray-900">
+              {initialData ? 'Edit Event' : 'Add Medition'}
+            </h1>
+          </div>
+          <div className="flex items-center space-x-2">
+
             <button
               type="submit"
               disabled={isLoading}
