@@ -1,7 +1,6 @@
 import { AllHTMLAttributes } from 'react';
-import { IconAdjustments, IconBasket, IconMenu2, IconSettings, IconSettingsFilled, IconUser } from '@tabler/icons-react';
+import { IconBasket, IconUser } from '@tabler/icons-react';
 import MyLink from './Link';
-import { useAside } from '../../context/Aside';
 
 let links = [
   { name: 'Dashboard', url: '/' },
@@ -16,7 +15,6 @@ let info = [
 type Header_Props = {} & AllHTMLAttributes<HTMLDivElement>;
 
 function Header(props: Header_Props) {
-  let openAsdie = useAside(state => state.toggle);
   return (
     <header className={'border-b py-4 text-sm  fixed top-0 w-full bg-white '} {...props}>
       <div className='md:flex hidden content w-full pt-4 flex-col gap-4'>

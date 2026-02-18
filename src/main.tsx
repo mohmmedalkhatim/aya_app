@@ -7,7 +7,7 @@ import dayjs from "dayjs";
 
 export let storage: Store;
 
-load("local_values").then((res) => {
+load("storage").then((res) => {
     console.log(dayjs().format())
     storage = res
     root.render(

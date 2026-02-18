@@ -1,35 +1,20 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   IconChevronLeft,
-  IconChevronRight,
-  IconClock,
   IconColorSwatch,
   IconDeviceFloppy,
-  IconX
 } from '@tabler/icons-react';
 import DataInput from '../data_input';
-import Checkbox from '../checkbox';
-import Input from '../Input';
-
 import Select from '../select';
-import SelectBox from '../BoxSelect';
 
 /* ───────────────────────────── Types ───────────────────────────── */
 
-interface EventModel {
+export interface EventModel {
   id: string;
-  kind?: string;
-  status?: string;
-  summary?: string;
-  description?: string;
-  color_id?: string;
-  start_date?: string;
-  start_datetime?: string;
-  start_timezone?: string;
-  end_date?: string;
-  end_datetime?: string;
-  end_timezone?: string;
-  end_time_unspecified?: boolean;
+  dosage?:string;
+  color_id?:string;
+  medication?:string;
+  time?:string;
 }
 
 interface EventFormProps {
@@ -48,8 +33,8 @@ const EventForm: React.FC<EventFormProps> = ({
   isLoading = false
 }) => {
   const [formData, setFormData] = useState<EventModel>({
-    id: '',
-    ...initialData,
+    id:"",
+    ...initialData
   });
 
   useEffect(() => {
@@ -70,13 +55,6 @@ const EventForm: React.FC<EventFormProps> = ({
 
   /* ───────────── Select Options ───────────── */
 
-  const statusOptions = useMemo(() => [
-    { value: 'Daily', label: 'Daily' },
-    { value: 'one time', label: 'one time' },
-  ], []);
-
-
-  let [range, setRange] = useState(false)
   const colorOptions = useMemo(() => [
     { value: '1', label: 'Blue', icon: <div className="w-4 h-4 rounded-full bg-blue-600" /> },
     { value: '2', label: 'Green', icon: <div className="w-4 h-4 rounded-full bg-green-600" /> },
@@ -88,7 +66,7 @@ const EventForm: React.FC<EventFormProps> = ({
   ], []);
 
   return (
-    <form onSubmit={handleSubmit} className="min-h-screen  pb-20">
+    <form onSubmit={handleSubmit} className="h-[44rem] w-[calc(100%-2rem)] pb-20">
       {/* Header */}
       <div className="sticky top-0 z-10 bg-white  px-2 py-3">
         <div className="flex items-center justify-between">
@@ -111,7 +89,7 @@ const EventForm: React.FC<EventFormProps> = ({
             <button
               type="submit"
               disabled={isLoading}
-              className="text-sm font-medium text-gray-600 rounded   disabled:opacity-50 touch-manipulation"
+              className="text-sm font-medium text-gray-600 rounded px-2   disabled:opacity-50 touch-manipulation"
             >
               {isLoading ? 'Saving...' : <IconDeviceFloppy size={"1.8rem"} />}
             </button>
@@ -127,17 +105,16 @@ const EventForm: React.FC<EventFormProps> = ({
             <DataInput
               type="text"
               label="MEDICATION DETAILS"
-              value={formData.summary}
-              onChange={(v) => handleChange("summary", v)}
+              required
+              value={formData.medication}
+              onChange={(v) => handleChange("medication", v)}
               placeholder="Medication Name (e.g., Metformin)"
               fullWidth
             />
-
-
             <DataInput
               type="text"
-              value={formData.description}
-              onChange={(v) => handleChange('description', v)}
+              value={formData.dosage}
+              onChange={(v) => handleChange('dosage', v)}
               placeholder="Dosage (e.g., 500mg)"
               required
               className='rounded-none'
@@ -145,19 +122,6 @@ const EventForm: React.FC<EventFormProps> = ({
               fullWidth
             />
           </div>
-
-
-          <SelectBox
-            label="type"
-            options={statusOptions}
-            value={formData.status}
-            onChange={(v) => handleChange('kind', v)}
-            placeholder="Select status"
-            size="lg"
-            fullWidth
-            clearable
-            leftSection={<IconClock size={18} />}
-          />
 
 
           <Select
@@ -173,47 +137,14 @@ const EventForm: React.FC<EventFormProps> = ({
           />
 
         </div>
-        {/* Date & Time */}
-        <div className='px-1'>
-          <Checkbox checked={range} className='rounded-lg' label='range action' onClick={() => setRange(!range)} />
-        </div>
-        {range ? <div className="space-y-6 flex flex-col gap-4">
-          {/* Start Time */}
-          <div className="space-y-3 flex flex-col gap-4">
 
-
-            <DataInput
-              type="datetime"
-              label="Start Date & Time"
-              value={formData.start_datetime}
-              onChange={(v) => handleChange('start_datetime', v)}
-              size="lg"
-              fullWidth
-            />
-
-          </div>
-
-          {/* End Time */}
-          <div className="space-y-3 flex flex-col gap-4">
-
-
-            <DataInput
-              type="datetime"
-              label="End Date & Time"
-              value={formData.end_datetime}
-              onChange={(v) => handleChange('end_datetime', v)}
-              size="lg"
-              fullWidth
-            />
-          </div>
-        </div> : <div className="space-y-3 flex flex-col gap-4">
-
-
+       {<div className="space-y-3 flex flex-col gap-4">
           <DataInput
-            type="datetime"
-            label="Date & Time"
-            value={formData.start_datetime}
-            onChange={(v) => handleChange('start_datetime', v)}
+            type="time"
+            label="Time"
+            required
+            value={formData.time}
+            onChange={(v) => handleChange('time', v)}
             size="lg"
             fullWidth
           />

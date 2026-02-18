@@ -4,13 +4,13 @@ use async_std::sync::Mutex;
 use migration::MigratorTrait;
 use sea_orm::DatabaseConnection;
 use std::sync::Arc;
-use tauri::{generate_handler, path::BaseDirectory, Manager};
+use tauri::{path::BaseDirectory, Manager};
+use tauri_plugin_store::StoreBuilder;
 mod app;
 mod firebase;
 struct DbConnection {
     db: Option<DatabaseConnection>,
 }
-
 
 #[tokio::main]
 async fn main() {
@@ -28,15 +28,14 @@ async fn main() {
     builder
         .plugin(tauri_plugin_store::Builder::new().build())
         .plugin(tauri_plugin_shell::init())
-        .invoke_handler(generate_handler![
-            app::events_control,
-        ])
         .setup(|app| {
             let database_url = app
                 .app_handle()
                 .path()
                 .resolve("Database\\test.db", BaseDirectory::AppData)
                 .unwrap();
+            let store = StoreBuilder::new(app.app_handle(), "main").build().unwrap();
+            println!("{:?}",store.get("hello"));
             if !database_url.exists() {
                 std::fs::create_dir_all(database_url.parent().unwrap()).unwrap();
                 std::fs::File::create(&database_url).unwrap();
@@ -50,6 +49,7 @@ async fn main() {
                     .await;
             });
             app.manage(database);
+        
             Ok(())
         })
         .run(tauri::generate_context!())
