@@ -3,6 +3,8 @@ import { Heading } from "../../../components/heading"
 import Input from "../../../components/Input"
 import { fetch } from "@tauri-apps/plugin-http"
 import { Link } from "react-router-dom"
+import { storage } from "../../../main"
+import { useStore } from "../../../context"
 
 interface RegisterPayload {
     name: string
@@ -16,12 +18,14 @@ function SignUp() {
         name: "",
         email: "",
         password: "",
-        confirm_password:""
+        confirm_password: ""
     })
 
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const [success, setSuccess] = useState<string | null>(null)
+
+    const setInfo = useStore(state=>state.setInfo)
 
     const handleChange = (key: keyof RegisterPayload, value: string) => {
         setForm(prev => ({ ...prev, [key]: value }))
@@ -59,6 +63,8 @@ function SignUp() {
             }
 
             const data = await response.json()
+            setInfo(data)
+            storage.set("info", data)
             setSuccess("Account created successfully.")
             console.log("Server response:", data)
 

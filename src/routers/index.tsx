@@ -23,8 +23,8 @@ let app_router = createBrowserRouter(
 let auth_router = createBrowserRouter(
     createRoutesFromElements(
         <Route element={<Auth/>}>
-            <Route path="/sign_in" index element={<SignIn/>}/>
             <Route path="/" element={<SignUp/>}/>
+            <Route path="/sign_in" index element={<SignIn/>}/>
         </Route>
     )
 )

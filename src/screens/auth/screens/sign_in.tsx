@@ -3,6 +3,8 @@ import { Heading } from "../../../components/heading"
 import Input from "../../../components/Input"
 import { fetch } from "@tauri-apps/plugin-http"
 import { Link } from "react-router-dom"
+import { useStore } from "../../../context"
+import { storage } from "../../../main"
 
 interface LoginPassword {
     email: string
@@ -18,6 +20,8 @@ function SignUp() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const [success, setSuccess] = useState<string | null>(null)
+
+    const setInfo = useStore(state=>state.setInfo)
 
     const handleChange = (key: keyof LoginPassword, value: string) => {
         setForm(prev => ({ ...prev, [key]: value }))
@@ -51,8 +55,9 @@ function SignUp() {
             }
 
             const data = await response.json()
+            setInfo(data)
+            storage.set("info",data)
             setSuccess("login successfully.")
-            console.log("Server response:", data)
 
         } catch (err: any) {
             setError(err.message || "Unexpected error occurred.")
