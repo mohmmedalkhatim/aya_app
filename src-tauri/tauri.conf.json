@@ -9,7 +9,7 @@
     "active": true,
     "targets": "all",
     "icon": [
-      "icons/school_system.ico"
+      "icons/aya_app.ico"
     ]
   },
   "productName": "aya_app",

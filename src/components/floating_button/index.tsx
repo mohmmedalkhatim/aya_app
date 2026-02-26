@@ -14,7 +14,7 @@ function FloatingButton() {
     let add_mediaction = useStore(state => state.add_med)
     return (
         <>
-            <div className="fixed bottom-6 shadow-xl right-6 bg-white p-4 rounded-lg border" onClick={() => setOpen(true)}><IconPlus size={"1.8rem"} color="gray" /></div>
+            <div className="fixed bottom-6 shadow-xl right-6 bg-sky-400 p-4 rounded-lg border" onClick={() => setOpen(true)}><IconPlus size={"1.8rem"} color="white" /></div>
             <AnimatePresence>
                 {open && (
                     <motion.dialog open={open} onClose={() => setOpen(false)} className="fixed inset-0 w-full top-20 backdrop-blur-sm flex items-center justify-center z-50" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>

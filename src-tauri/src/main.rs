@@ -14,7 +14,7 @@ struct DbConnection {
 
 #[tokio::main]
 async fn main() {
-    let mut builder = tauri::Builder::default();
+    let mut builder = tauri::Builder::default().plugin(tauri_plugin_http::init());
     #[cfg(desktop)]
     {
         builder = builder.plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {
@@ -28,6 +28,8 @@ async fn main() {
     builder
         .plugin(tauri_plugin_store::Builder::new().build())
         .plugin(tauri_plugin_shell::init())
+        .plugin(tauri_plugin_oauth::init())
+        .invoke_handler(tauri::generate_handler![app::start_oauth_server])
         .setup(|app| {
             let database_url = app
                 .app_handle()
@@ -35,7 +37,7 @@ async fn main() {
                 .resolve("Database\\test.db", BaseDirectory::AppData)
                 .unwrap();
             let store = StoreBuilder::new(app.app_handle(), "main").build().unwrap();
-            println!("{:?}",store.get("hello"));
+            println!("{:?}", store.get("hello"));
             if !database_url.exists() {
                 std::fs::create_dir_all(database_url.parent().unwrap()).unwrap();
                 std::fs::File::create(&database_url).unwrap();
@@ -49,7 +51,7 @@ async fn main() {
                     .await;
             });
             app.manage(database);
-        
+
             Ok(())
         })
         .run(tauri::generate_context!())

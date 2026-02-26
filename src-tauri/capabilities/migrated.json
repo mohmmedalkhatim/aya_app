@@ -1,5 +1,5 @@
 {
-  "identifier": "migrated",
+  "identifier": "aya.app",
   "description": "permissions that were migrated from v1",
   "local": true,
   "windows": [
@@ -9,6 +9,23 @@
     "core:default",
     "shell:allow-open",
     "shell:default",
-    "store:default" 
-   ]
+    "store:default",
+    "http:default",
+    {
+      "identifier": "http:default",
+      "allow": [
+        {
+          "url": "http://localhost:4000"
+        },
+        {
+          "url": "https://*.tauri.app"
+        }
+      ],
+      "deny": [
+        {
+          "url": "https://private.tauri.app"
+        }
+      ]
+    }
+  ]
 }

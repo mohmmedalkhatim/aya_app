@@ -5,6 +5,8 @@ import SignIn from "../screens/auth/screens/sign_in";
 import Profile from "../screens/profile";
 import Calculator from "../screens/calculator";
 import Calendar from "../screens/calendar";
+import Auth from "../screens/auth/main";
+import SignUp from "../screens/auth/screens/sign_up";
 
 
 
@@ -20,9 +22,9 @@ let app_router = createBrowserRouter(
 )
 let auth_router = createBrowserRouter(
     createRoutesFromElements(
-        <Route element={<App />} >
-            <Route element={<SignIn />} path="/sign_in"></Route>
-            <Route element={<SignIn />} path="/sign_up"></Route>
+        <Route element={<Auth/>}>
+            <Route path="/sign_in" index element={<SignIn/>}/>
+            <Route path="/" element={<SignUp/>}/>
         </Route>
     )
 )
