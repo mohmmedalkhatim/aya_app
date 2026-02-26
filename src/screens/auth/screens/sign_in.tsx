@@ -1,8 +1,8 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Heading } from "../../../components/heading"
 import Input from "../../../components/Input"
 import { fetch } from "@tauri-apps/plugin-http"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useStore } from "../../../context"
 import { storage } from "../../../main"
 
@@ -11,7 +11,9 @@ interface LoginPassword {
     password: string
 }
 
-function SignUp() {
+function SignIn() {
+    let nevigate = useNavigate()
+
     const [form, setForm] = useState<LoginPassword>({
         email: "",
         password: ""
@@ -21,7 +23,7 @@ function SignUp() {
     const [error, setError] = useState<string | null>(null)
     const [success, setSuccess] = useState<string | null>(null)
 
-    const setInfo = useStore(state=>state.setInfo)
+    const setInfo = useStore(state => state.setInfo)
 
     const handleChange = (key: keyof LoginPassword, value: string) => {
         setForm(prev => ({ ...prev, [key]: value }))
@@ -56,7 +58,8 @@ function SignUp() {
 
             const data = await response.json()
             setInfo(data)
-            storage.set("info",data)
+            storage.set("info", data)
+            nevigate("/")
             setSuccess("login successfully.")
 
         } catch (err: any) {
@@ -120,4 +123,4 @@ function SignUp() {
     )
 }
 
-export default SignUp
+export default SignIn

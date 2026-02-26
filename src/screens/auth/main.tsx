@@ -4,12 +4,6 @@ import { useStore } from "../../context"
 import { useEffect } from "react"
 
 function Auth() {
-  let info = useStore(state => state.info)
-  let nevigate = useNavigate()
-  useEffect(() => {
-    nevigate("/")
-  }, [info.access_token])
-
   return (
     <Outlet />
   )
