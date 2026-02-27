@@ -1,8 +1,10 @@
-import { AllHTMLAttributes } from 'react';
+import { AllHTMLAttributes, useActionState } from 'react';
 import { IconBasket, IconUser } from '@tabler/icons-react';
 import { useStore } from "../../context"
 import MyLink from './Link';
 import { storage } from '../../main';
+import dayjs from 'dayjs';
+import { useActionData } from 'react-router-dom';
 
 let links = [
   { name: 'Dashboard', url: '/' },
@@ -18,6 +20,7 @@ type Header_Props = {} & AllHTMLAttributes<HTMLDivElement>;
 
 function Header(props: Header_Props) {
   let setInfo = useStore(state => state.setInfo)
+  let date = dayjs().hour()
   let logout = () => {storage.set("info",{access_token:""}); setInfo({ access_token: "" })}
   return (
     <header className={'border-b py-4 text-sm  fixed top-0 w-full bg-white '} {...props}>
@@ -38,7 +41,7 @@ function Header(props: Header_Props) {
       <div className='flex md:hidden content items-center justify-between gap-4 '>
         <div className='flex gap-4 items-center'>
           <div>
-            <h5>Good evening</h5>
+            <h5>{date> 12?"Good eveing":"Good morning"}</h5>
             <div className='text-gray-400/80'>mohammed alkhatims</div>
           </div>
         </div>

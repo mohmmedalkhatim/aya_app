@@ -8,11 +8,11 @@ import { useEffect } from "react"
 
 
 function App() {
-  let info = useStore(state => state.info)
+  let keys = useStore(state => state.keys)
   let nevigate = useNavigate()
   useEffect(() => {
     nevigate("/")
-  }, [info.access_token])
+  }, [keys.access_token])
   return (
     <>
       <Header />

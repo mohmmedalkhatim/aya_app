@@ -3,13 +3,13 @@ import { EventModel } from '../components/event_form';
 import { storage } from '../main';
 
 
-export type Info =  {
+export type Keys =  {
     access_token: string;
   }
 export interface medications_ui_state {
   list: EventModel[];
-  info:Info;
-  setInfo: (info:Info) => void;
+  keys:Keys;
+  setInfo: (keys:Keys) => void;
   add_med: (med: EventModel) => void;
   init: () => void;
   update_med: (med: EventModel) => void;
@@ -20,11 +20,11 @@ interface medsStorage {
 
 export let useStore = create<medications_ui_state>(set => ({
   list: [],
-  info: {
+  keys: {
     access_token: '',
   },
-  setInfo:(info)=>{
-    set({info})
+  setInfo:(keys)=>{
+    set({keys})
   },
   init: () => {
     storage.get<EventModel[] | undefined>('medications').then(res => {
