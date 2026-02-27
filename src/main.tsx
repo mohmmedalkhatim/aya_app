@@ -25,9 +25,7 @@ let root = client.createRoot(document.getElementById("root") as HTMLDivElement);
 load("storage").then((res) => {
     storage = res;
     storage.get<Info>("info").then((info) => {
-        if (info) {
-            useStore.setState({ info })
-        }
+        if (info) useStore.setState({ info })
         root.render(
             <App />
         )

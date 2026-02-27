@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import { Heading } from "../../../components/heading"
 import Input from "../../../components/Input"
 import { fetch } from "@tauri-apps/plugin-http"
 import { Link, useNavigate } from "react-router-dom"
@@ -107,7 +106,7 @@ function SignIn() {
                     <div>
                         don't an account?
                     </div>
-                    <Link className="text-sky-500 underline" to={"/"}>
+                    <Link className="text-sky-500 underline" to={"/sign_up"}>
                         register
                     </Link>
                 </div>

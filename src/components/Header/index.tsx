@@ -2,6 +2,7 @@ import { AllHTMLAttributes } from 'react';
 import { IconBasket, IconUser } from '@tabler/icons-react';
 import { useStore } from "../../context"
 import MyLink from './Link';
+import { storage } from '../../main';
 
 let links = [
   { name: 'Dashboard', url: '/' },
@@ -17,7 +18,7 @@ type Header_Props = {} & AllHTMLAttributes<HTMLDivElement>;
 
 function Header(props: Header_Props) {
   let setInfo = useStore(state => state.setInfo)
-  let logout = () => setInfo({ access_token: "" })
+  let logout = () => {storage.set("info",{access_token:""}); setInfo({ access_token: "" })}
   return (
     <header className={'border-b py-4 text-sm  fixed top-0 w-full bg-white '} {...props}>
       <div className='md:flex hidden content w-full pt-4 flex-col gap-4'>

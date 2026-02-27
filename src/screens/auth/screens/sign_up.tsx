@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Heading } from "../../../components/heading"
 import Input from "../../../components/Input"
 import { fetch } from "@tauri-apps/plugin-http"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { storage } from "../../../main"
 import { useStore } from "../../../context"
 
@@ -14,6 +14,7 @@ interface RegisterPayload {
 }
 
 function SignUp() {
+    let nevigate = useNavigate()
     const [form, setForm] = useState<RegisterPayload>({
         name: "",
         email: "",
@@ -25,7 +26,7 @@ function SignUp() {
     const [error, setError] = useState<string | null>(null)
     const [success, setSuccess] = useState<string | null>(null)
 
-    const setInfo = useStore(state=>state.setInfo)
+    const setInfo = useStore(state => state.setInfo)
 
     const handleChange = (key: keyof RegisterPayload, value: string) => {
         setForm(prev => ({ ...prev, [key]: value }))
@@ -65,6 +66,9 @@ function SignUp() {
             const data = await response.json()
             setInfo(data)
             storage.set("info", data)
+            setInfo(data)
+            storage.set("info", data)
+            nevigate("/")
             setSuccess("Account created successfully.")
             console.log("Server response:", data)
 
@@ -122,7 +126,7 @@ function SignUp() {
                 <button
                     type="submit"
                     disabled={loading}
-                    className="bg-black text-white py-2 rounded"
+                    className="bg-[#222b3c] text-white py-2 rounded"
                 >
                     {loading ? "Creating..." : "Sign Up"}
                 </button>
@@ -130,7 +134,7 @@ function SignUp() {
                     <div>
                         do you already have and account?
                     </div>
-                    <Link className="text-sky-500 underline" to={"/sign_in"}>
+                    <Link className="text-sky-500 underline" to={"/"}>
                         login
                     </Link>
                 </div>
