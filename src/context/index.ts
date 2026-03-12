@@ -1,54 +1,71 @@
 import { create } from 'zustand';
-import { EventModel } from '../components/event_form';
 import { storage } from '../main';
+import { data } from 'react-router-dom';
+import { EventModel } from '../components/event_form';
 
+export type Data = {
+  id: number;
+  dosages: { list: EventModel[] };
+  events: { list: EventModel[] };
+  userId: number;
+};
 
-export type Keys =  {
-    access_token: string;
-  }
+export type Keys = {
+  access_token: string;
+};
 export interface medications_ui_state {
-  list: EventModel[];
-  keys:Keys;
-  setInfo: (keys:Keys) => void;
+  data: Data | null;
+  keys: Keys;
+  setInfo: (keys: Keys) => void;
   add_med: (med: EventModel) => void;
   init: () => void;
   update_med: (med: EventModel) => void;
 }
-interface medsStorage {
-  list?: EventModel[];
-}
 
 export let useStore = create<medications_ui_state>(set => ({
-  list: [],
+  data: null,
   keys: {
     access_token: '',
   },
-  setInfo:(keys)=>{
-    set({keys})
+  setInfo: keys => {
+    set({ keys });
   },
   init: () => {
-    storage.get<EventModel[] | undefined>('medications').then(res => {
+    storage.get<Data | undefined>('data').then(res => {
       if (res == null || res == undefined) {
-        storage.set('medications', []);
+        storage.set('data', []);
       }
-      set({ list: res });
+      set({});
     });
   },
   add_med: med => {
     set(state => {
-      storage.set('medications', [...state.list, med]);
-      return {
-        list: [...state.list, med],
-      };
+      if (state.data) {
+        storage.set('data', {
+          dosages: { list: [...state.data.dosages.list, med] },
+          ...data,
+        });
+        return { ...state.data };
+      } else {
+        return {};
+      }
     });
   },
   update_med: med => {
     set(state => {
-      let filterd = state.list.filter(item => item.id != med.id);
-      storage.set('medications', [...state.list, med]);
-      return {
-        list: [...filterd, med],
-      };
+      if (state.data) {
+        let filterd = state.data.dosages.list.filter(
+          item => item.id !== med.id
+        );
+        storage.set('data', {
+          dosages: { list: [med, filterd] },
+          ...data,
+        });
+        return { ...state.data };
+      } else {
+        return {};
+      }
     });
   },
+
 }));

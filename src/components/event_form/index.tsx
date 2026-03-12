@@ -1,18 +1,15 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   IconChevronLeft,
-  IconColorSwatch,
   IconDeviceFloppy,
 } from '@tabler/icons-react';
 import DataInput from '../data_input';
-import Select from '../select';
 
 /* ───────────────────────────── Types ───────────────────────────── */
 
 export interface EventModel {
   id: string;
   dosage?:string;
-  color_id?:string;
   medication?:string;
   time?:string;
 }
@@ -55,18 +52,9 @@ const EventForm: React.FC<EventFormProps> = ({
 
   /* ───────────── Select Options ───────────── */
 
-  const colorOptions = useMemo(() => [
-    { value: '1', label: 'Blue', icon: <div className="w-4 h-4 rounded-full bg-blue-600" /> },
-    { value: '2', label: 'Green', icon: <div className="w-4 h-4 rounded-full bg-green-600" /> },
-    { value: '3', label: 'Purple', icon: <div className="w-4 h-4 rounded-full bg-purple-600" /> },
-    { value: '4', label: 'Red', icon: <div className="w-4 h-4 rounded-full bg-red-600" /> },
-    { value: '5', label: 'Yellow', icon: <div className="w-4 h-4 rounded-full bg-yellow-600" /> },
-    { value: '6', label: 'Orange', icon: <div className="w-4 h-4 rounded-full bg-orange-600" /> },
-    { value: '7', label: 'Turquoise', icon: <div className="w-4 h-4 rounded-full bg-cyan-600" /> }
-  ], []);
 
   return (
-    <form onSubmit={handleSubmit} className="h-[44rem] w-[calc(100%-2rem)] pb-20">
+    <form onSubmit={handleSubmit} className="h-176 w-[calc(100%-2rem)] pb-20">
       {/* Header */}
       <div className="sticky top-0 z-10 bg-white  px-2 py-3">
         <div className="flex items-center justify-between">
@@ -83,6 +71,7 @@ const EventForm: React.FC<EventFormProps> = ({
             <h1 className="text-lg font-semibold text-gray-900">
               {initialData ? 'Edit Event' : 'Add Medition'}
             </h1>
+
           </div>
           <div className="flex items-center space-x-2">
 
@@ -123,18 +112,6 @@ const EventForm: React.FC<EventFormProps> = ({
             />
           </div>
 
-
-          <Select
-            label="Color"
-            options={colorOptions}
-            value={formData.color_id}
-            onChange={(v) => handleChange('color_id', v)}
-            placeholder="Select color"
-            size="lg"
-            searchable
-            fullWidth
-            leftSection={<IconColorSwatch size={18} />}
-          />
 
         </div>
 

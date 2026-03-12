@@ -8,17 +8,22 @@ import { useEffect } from "react"
 
 
 function App() {
-  let keys = useStore(state => state.keys)
-  let nevigate = useNavigate()
+  let access_token = useStore(state => state.keys.access_token)
+  let login = access_token !== "";
+  let navigate = useNavigate()
   useEffect(() => {
-    nevigate("/")
-  }, [keys.access_token])
-  return (
+    if (login) {
+      navigate("/")
+    } else {
+      navigate("/sign_in")
+    }
+  }, [access_token])
+  return login ? (
     <>
       <Header />
       <Outlet />
       <FloatingButton />
     </>
-  )
+  ) : <Outlet />
 }
 export default App

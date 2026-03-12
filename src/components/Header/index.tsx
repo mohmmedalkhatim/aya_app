@@ -21,7 +21,11 @@ type Header_Props = {} & AllHTMLAttributes<HTMLDivElement>;
 function Header(props: Header_Props) {
   let setInfo = useStore(state => state.setInfo)
   let date = dayjs().hour()
-  let logout = () => {storage.set("info",{access_token:""}); setInfo({ access_token: "" })}
+  let logout = () => {
+    storage.clear()
+    storage.set("info", { access_token: "" });
+    setInfo({ access_token: "" })
+  }
   return (
     <header className={'border-b py-4 text-sm  fixed top-0 w-full bg-white '} {...props}>
       <div className='md:flex hidden content w-full pt-4 flex-col gap-4'>
@@ -41,11 +45,11 @@ function Header(props: Header_Props) {
       <div className='flex md:hidden content items-center justify-between gap-4 '>
         <div className='flex gap-4 items-center'>
           <div>
-            <h5>{date> 12?"Good eveing":"Good morning"}</h5>
+            <h5>{date > 12 ? "Good eveing" : "Good morning"}</h5>
             <div className='text-gray-400/80'>mohammed alkhatims</div>
           </div>
         </div>
-        <div className='bg-sky-400 rounded-full p-2' onClick={logout}>
+        <div className='bg-sky-400 rounded-full p-2 cursor-pointer' onClick={logout}>
           <IconUser color='white' />
         </div>
       </div>
