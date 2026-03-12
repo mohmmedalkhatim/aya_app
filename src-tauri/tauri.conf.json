@@ -25,7 +25,8 @@
       {
         "title": "com.aya.app",
         "width": 460,
-        "height": 600
+        "height": 600,
+        "maxWidth": 460
       }
     ]
     
