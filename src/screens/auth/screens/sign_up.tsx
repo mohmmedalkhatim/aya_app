@@ -5,6 +5,8 @@ import { fetch } from "@tauri-apps/plugin-http"
 import { Link, useNavigate } from "react-router-dom"
 import { storage } from "../../../main"
 import { useStore } from "../../../context"
+import { invoke } from "@tauri-apps/api/core"
+import { IconBrandGoogle } from "@tabler/icons-react"
 
 interface RegisterPayload {
     name: string
@@ -66,8 +68,6 @@ function SignUp() {
             const data = await response.json()
             setInfo(data)
             storage.set("info", data)
-            setInfo(data)
-            storage.set("info", data)
             nevigate("/")
             setSuccess("Account created successfully.")
             console.log("Server response:", data)
@@ -80,7 +80,7 @@ function SignUp() {
     }
 
     return (
-        <main className="content pt-40 flex flex-col justify-center h-[30rem]">
+        <main className="content pt-70 flex flex-col justify-center h-120">
             <form
                 onSubmit={handleSubmit}
                 className="flex flex-col px-4 gap-6 w-full"
@@ -130,11 +130,19 @@ function SignUp() {
                 >
                     {loading ? "Creating..." : "Sign Up"}
                 </button>
+                <button
+                    onClick={() => invoke("start_oauth_server")}
+                    className="bg-[#222b3c] text-white py-2 rounded"
+                >
+                    <div className="flex items-center justify-center gap-3">
+                        <div>register with Google </div><IconBrandGoogle />
+                    </div>
+                </button>
                 <div className="flex gap-1">
                     <div>
                         do you already have and account?
                     </div>
-                    <Link className="text-sky-500 underline" to={"/"}>
+                    <Link viewTransition className="text-sky-500 underline" to={"/sign_in"}>
                         login
                     </Link>
                 </div>

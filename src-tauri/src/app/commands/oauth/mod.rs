@@ -1,26 +1,20 @@
-use async_std::{fs, sync::Mutex};
 use axum::{
     body::Body,
-    extract::{Query, Request},
+    extract::Request,
     http::Response,
-    routing::{get, get_service},
+    routing::get_service,
     serve, Router,
 };
 use oauth2::{
-    AuthUrl, AuthorizationCode, ClientId, ClientSecret, CsrfToken, EmptyExtraTokenFields, PkceCodeChallenge, PkceCodeVerifier, RedirectUrl, Scope, StandardTokenResponse, TokenResponse, TokenUrl, basic::{BasicClient, BasicTokenType}, reqwest::async_http_client
+    basic::{BasicClient, BasicTokenType},
+    reqwest::async_http_client,
+    AuthUrl, AuthorizationCode, ClientId, CsrfToken, EmptyExtraTokenFields, PkceCodeChallenge,
+    RedirectUrl, Scope, StandardTokenResponse, TokenResponse, TokenUrl,
 };
-use std::{
-    collections::HashMap,
-    convert::Infallible,
-    net::SocketAddr,
-    sync::{atomic, Arc},
-};
-use tauri::{window, Emitter, Listener, Manager, Runtime, Window};
-
-#[derive(Debug, Clone)]
-struct Storage {
-    keys: Option<String>,
-}
+use reqwest::Client;
+use serde::{Deserialize, Serialize};
+use std::{collections::HashMap, convert::Infallible, sync::Arc};
+use tauri::{ Emitter, Listener, Window};
 
 #[tauri::command]
 pub async fn start_oauth_server(window: Window) -> Result<String, String> {
@@ -42,7 +36,7 @@ pub async fn start_oauth_server(window: Window) -> Result<String, String> {
 
     let (pkce_challenge, pkce_verifier) = PkceCodeChallenge::new_random_sha256();
 
-    let (auth_url, csrf_token) = client
+    let (auth_url, _csrf_token) = client
         .authorize_url(CsrfToken::new_random)
         .add_scope(Scope::new(
             "https://www.googleapis.com/auth/userinfo.profile".into(),
@@ -54,10 +48,10 @@ pub async fn start_oauth_server(window: Window) -> Result<String, String> {
     open::that(auth_url.as_str()).unwrap();
 
     // start temporary server
-    let code = wait_for_callback(Arc::clone(&atomic)).await?;
+    let _ = wait_for_callback(Arc::clone(&atomic)).await?;
 
     let _ = atomic.clone().once("result", move |evet| {
-        async move {
+        let _ = async move {
             let token_result: oauth2::StandardTokenResponse<
                 oauth2::EmptyExtraTokenFields,
                 oauth2::basic::BasicTokenType,
@@ -68,11 +62,11 @@ pub async fn start_oauth_server(window: Window) -> Result<String, String> {
                 .await
                 .map_err(|e| e.to_string())
                 .unwrap();
-            saveUserInfo(atomic.clone(),token_result);
+            save_user_info(atomic.clone(), token_result).await;
         };
     });
 
-    todo!()
+    Ok("login_has_successed".to_string())
 }
 
 fn generate_query(query_str: String) -> Result<HashMap<String, String>, String> {
@@ -120,10 +114,19 @@ async fn wait_for_callback(window: Arc<Window>) -> Result<String, String> {
     todo!()
 }
 
-async fn saveUserInfo(atomic: Arc<Window>,token_res:StandardTokenResponse<EmptyExtraTokenFields, BasicTokenType>) {
-    let path = atomic
-        .app_handle()
-        .path()
-        .resolve("/data/cerdential.json", tauri::path::BaseDirectory::Config);
-    let info = fs::read_to_string(path.unwrap()).await.unwrap();
+#[derive(Serialize,Deserialize,Clone)]
+struct ResponseToken {
+    access_token: String,
+}
+async fn save_user_info(
+    atomic: Arc<Window>,
+    token_res: StandardTokenResponse<EmptyExtraTokenFields, BasicTokenType>,
+) {
+    let mut body=  HashMap::new();
+    body.insert("token".to_string(), token_res.access_token().secret().as_str().to_string());
+    let info = Client::new();
+    let payload = info
+        .post("http://localhost:4000/oauth")
+        .form(&body).send().await.unwrap();
+    let _ = atomic.emit("token", payload.json::<ResponseToken>().await.unwrap());
 }

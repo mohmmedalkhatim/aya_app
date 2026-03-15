@@ -2,7 +2,7 @@ import { IconDropletFilled, IconScan } from "@tabler/icons-react"
 import { useState } from "react"
 
 function DashboardHeader() {
-    let [suger,setSuger] = useState(69)
+    let [suger, setSuger] = useState(69)
     return (
         <div className="flex items-center justify-between w-full p-4 border">
             <div className="flex items-center gap-2">
@@ -11,7 +11,9 @@ function DashboardHeader() {
                     {suger}
                 </div>
             </div>
-            <IconScan />
+            <button className="hover:bg-gray-400/20 p-1 cursor-pointer rounded">
+                <IconScan />
+            </button>
         </div>
     )
 }

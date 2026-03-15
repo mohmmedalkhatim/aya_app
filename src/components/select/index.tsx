@@ -9,7 +9,6 @@ import {
 } from '@tabler/icons-react';
 
 /* ───────────────────────────── Types ───────────────────────────── */
-
 type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 type Variant = 'default' | 'filled' | 'underline';
 

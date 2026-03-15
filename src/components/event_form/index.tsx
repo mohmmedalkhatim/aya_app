@@ -4,14 +4,14 @@ import {
   IconDeviceFloppy,
 } from '@tabler/icons-react';
 import DataInput from '../data_input';
+import TimePicker from '../time_picker';
 
 /* ───────────────────────────── Types ───────────────────────────── */
 
 export interface EventModel {
-  id: string;
-  dosage?:string;
-  medication?:string;
-  time?:string;
+  dosage: string;
+  name: string;
+  time: string;
 }
 
 interface EventFormProps {
@@ -30,8 +30,9 @@ const EventForm: React.FC<EventFormProps> = ({
   isLoading = false
 }) => {
   const [formData, setFormData] = useState<EventModel>({
-    id:"",
-    ...initialData
+    time: "",
+    dosage: "",
+    name: ""
   });
 
   useEffect(() => {
@@ -63,7 +64,7 @@ const EventForm: React.FC<EventFormProps> = ({
               <div
                 onClick={onCancel}
                 onTouchEnd={onCancel}
-                className="text-sm font-medium p-2 rounded-sm cursor-pointer   text-gray-700 active:bg-gray-200 touch-manipulation"
+                className="text-sm font-medium p-2 rounded-sm cursor-pointer hover:bg-gray-500/10  text-gray-700 active:bg-gray-200 touch-manipulation"
               >
                 <IconChevronLeft />
               </div>
@@ -78,7 +79,7 @@ const EventForm: React.FC<EventFormProps> = ({
             <button
               type="submit"
               disabled={isLoading}
-              className="text-sm font-medium text-gray-600 rounded px-2   disabled:opacity-50 touch-manipulation"
+              className="text-sm font-medium text-gray-600 hover:bg-gray-500/10 py-2 rounded px-2   disabled:opacity-50 touch-manipulation"
             >
               {isLoading ? 'Saving...' : <IconDeviceFloppy size={"1.8rem"} />}
             </button>
@@ -95,8 +96,8 @@ const EventForm: React.FC<EventFormProps> = ({
               type="text"
               label="MEDICATION DETAILS"
               required
-              value={formData.medication}
-              onChange={(v) => handleChange("medication", v)}
+              value={formData.name}
+              onChange={(v) => handleChange("name", v)}
               placeholder="Medication Name (e.g., Metformin)"
               fullWidth
             />
@@ -115,15 +116,11 @@ const EventForm: React.FC<EventFormProps> = ({
 
         </div>
 
-       {<div className="space-y-3 flex flex-col gap-4">
-          <DataInput
-            type="time"
-            label="Time"
-            required
+        {<div className="space-y-3 flex flex-col gap-4">
+
+          <TimePicker
+            onChange={(e) => handleChange("time", e)}
             value={formData.time}
-            onChange={(v) => handleChange('time', v)}
-            size="lg"
-            fullWidth
           />
 
         </div>}
