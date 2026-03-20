@@ -39,7 +39,7 @@ export let useStore = create<medications_ui_state>(set => ({
     console.log(data);
     if (data && data?.dosages) {
       set(state => ({
-        data: { dosages: data?.dosages },
+        data: data,
       }));
     } else {
       let body = await apiCall({ token });
@@ -52,6 +52,11 @@ export let useStore = create<medications_ui_state>(set => ({
   },
   add_med: async (payload, token) => {
     let body = await apiCall({ method: 'POST', token, payload });
+    storage.set('information', { dosages: body.list });
+    console.log(body.list);
+    set(state => ({
+      data: { dosages: [...state.data?.dosages, ...body.list] },
+    }));
   },
   update_med: async (med, token) => {},
 }));
@@ -73,5 +78,5 @@ let apiCall = async ({
     },
     body: payload ? JSON.stringify(payload) : undefined,
   });
-    return (await res.json()) as { list: EventModel[] };
+  return (await res.json()) as { list: EventModel[] };
 };

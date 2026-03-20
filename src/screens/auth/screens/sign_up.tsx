@@ -44,14 +44,13 @@ function SignUp() {
             setError("All fields are required.")
             return
         }
-        if (form.confirm_password == form.password) {
-            setError("")
+        if (form.confirm_password !== form.password) {
+            setError("the passwords doesn't match")
             return
         }
 
         try {
             setLoading(true)
-
             const response = await fetch("http://localhost:4000/auth/register", {
                 method: "POST",
                 headers: {
@@ -67,7 +66,7 @@ function SignUp() {
 
             const data = await response.json()
             setInfo(data)
-            storage.set("info", data)
+            storage.set("keys", data)
             nevigate("/")
             setSuccess("Account created successfully.")
             console.log("Server response:", data)

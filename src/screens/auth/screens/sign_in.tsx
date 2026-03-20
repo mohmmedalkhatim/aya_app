@@ -53,7 +53,7 @@ function SignIn() {
             console.log(response)
             if (!response.ok) {
                 const message = await response.text()
-                throw new Error(message || "Registration failed")
+                setError("Registration failed")
             }
 
             const data = await response.json()
