@@ -44,6 +44,7 @@ function SignUp() {
             setError("All fields are required.")
             return
         }
+        console.log(form)
         if (form.confirm_password !== form.password) {
             setError("the passwords doesn't match")
             return
@@ -117,7 +118,7 @@ function SignUp() {
                     label="Confirm_password"
                     placeholder="Confirm your password"
                     type="password"
-                    value={form.password}
+                    value={form.confirm_password}
                     onChange={(e: any) => handleChange("confirm_password", e.target.value)}
                 />
 

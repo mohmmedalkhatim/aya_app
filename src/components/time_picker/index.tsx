@@ -3,16 +3,17 @@ import { number } from "motion/react";
 import { useEffect, useRef, useState } from "react"
 
 interface TimePicker {
-    onChange: (data: string) => void;
+    onChange: (date: string) => void;
     placeholder?: string
+    label?: string
     value: string
 }
 
 function TimePicker(props: TimePicker) {
-    let [data, setData] = useState(dayjs().startOf("D").startOf("h").format("HH:MM"))
+    let [date, setDate] = useState(dayjs().startOf("D").format("HH:MM"))
     let [intervel, setInterval] = useState<"PM" | "AM">("AM")
-    let [hour, setHour] = useState<number | undefined>()
-    let [Minent, setMinet] = useState<number | undefined>()
+    let [hour, setHour] = useState<number | undefined>(0)
+    let [Minent, setMinet] = useState<number | undefined>(0)
     let [IsOpen, setIsOpen] = useState(false)
     let timePickerRef = useRef<HTMLDivElement>(null)
     useEffect(() => {
@@ -27,26 +28,28 @@ function TimePicker(props: TimePicker) {
     }, []);
 
     useEffect(() => {
-
-        let date = dayjs().startOf("D").add(Number(hour), "h").add(Number(Minent), "m")
-        if (intervel == "PM") {
-            date.add(12, "h")
-        }
-        setData(date.format("HH:mm"))
-        console.log(date.format())
-        props.onChange(date.format())
+        let temp = dayjs().startOf("D").add(Number(hour), "h").add(Number(Minent), "m").add(intervel == "PM" ? 12 : 0, "h")
+        setDate(temp.format("HH:mm"))
+        console.log(temp.format())
+        props.onChange(temp.format())
     }, [hour, Minent, intervel])
     return (
         <div className="relative">
+            {props.label && (
+                <label className="text-sm flex 0 -translate-y-1 translate-x-2 font-medium relative">
+
+                    {props.label}
+                </label>
+            )}
             <div onClick={() => setIsOpen(true)} className="focus:border-sky-400 p-3 focus:border-2 border rounded-md cursor-pointer">
-                {data + " " + intervel}
+                {date + " " + intervel}
             </div>
             {/* Timepicker */}
             {IsOpen &&
                 <div className="rounded  translate-y-2 shadow flex flex-col gap-3  absolute w-full bg-white" ref={timePickerRef}>
                     <div className="border-b flex gap-2 py-2 items-center justify-center">
                         <div>
-                            {data}
+                            {date}
                         </div>
                         <div>
                             {intervel}
@@ -61,9 +64,9 @@ function TimePicker(props: TimePicker) {
                             ))}
                         </div>
                         <div className="overflow-auto flex flex-col px-3 gap-1  h-50 grow">
-                            {Array.from({ length: 11 }).map((_, index) => (
-                                <div onClick={() => setMinet(((index + 1) * 5))} className="border rounded p-2">
-                                    {((index + 1) * 5)}
+                            {Array.from({ length: 12 }).map((_, index) => (
+                                <div onClick={() => setMinet(((index) * 5))} className="border rounded p-2">
+                                    {(index * 5)}
                                 </div>
                             ))}
                         </div>

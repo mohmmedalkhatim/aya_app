@@ -16,7 +16,7 @@ export interface medications_ui_state {
   keys: Keys;
   setInfo: (keys: Keys) => void;
   setData: (data: Data) => void;
-  add_med: (med: EventModel, type: 'dosages' | 'events') => Promise<void>;
+  add_med: (med: EventModel, type: string) => Promise<void>;
   init: (access: string) => Promise<void>;
   update_med: (med: EventModel, type: 'dosages' | 'events') => Promise<void>;
 }
@@ -36,47 +36,66 @@ export let useStore = create<medications_ui_state>(set => ({
   },
   init: async token => {
     let data = await storage.get<Data>('information');
-    console.log(data);
     if (data && data?.dosages) {
       set(state => ({
         data: data,
       }));
     } else {
-      let body = await apiCall({ token });
-      storage.set('information', { dosages: body.list });
-      console.log(body.list);
-      set(state => ({
-        data: { dosages: body.list },
-      }));
+      let res = await apiCall({ token });
+      console.log(res.status);
+      if (res.ok) {
+        let body = await res.json();
+        storage.set('information', { dosages: body.list });
+        console.log(body.list);
+        set(state => ({
+          data: { dosages: body.list },
+        }));
+      }
     }
   },
   add_med: async (payload, token) => {
-    let body = await apiCall({ method: 'POST', token, payload });
-    storage.set('information', { dosages: body.list });
-    console.log(body.list);
-    set(state => ({
-      data: { dosages: [...state.data?.dosages, ...body.list] },
-    }));
+    let res = await apiCall({ method: 'POST', token, payload });
+    console.log(res);
+    if (res.ok) {
+      let body = await res.json();
+      storage.set('information', { dosages: body.list });
+      console.log(body.list);
+      set(state => ({
+        data: { dosages: [...state.data?.dosages, ...body.list] },
+      }));
+    }
   },
-  update_med: async (med, token) => {},
+  update_med: async (payload, token) => {
+    let res = await apiCall({ method: 'POST', token, payload });
+    console.log(res);
+    if (res.ok) {
+      let body = await res.json();
+      storage.set('information', { dosages: body.list });
+      console.log(body.list);
+      set(state => ({
+        data: { dosages: [...state.data?.dosages, ...body.list] },
+      }));
+    }
+  },
 }));
 
 let apiCall = async ({
-  method,
+  method = 'GET',
   token,
   payload,
 }: {
-  method?: 'POST' | 'PUT';
+  method?: 'POST' | 'PUT' | 'GET';
   token: string;
   payload?: EventModel;
 }) => {
+  console.log(token);
   let res = await fetch('http://localhost:4000/user_medicines', {
-    method: method || 'GET',
+    method: method,
     headers: {
       'Content-Type': 'application/json',
       authorization: `Bearer ${token}`,
     },
     body: payload ? JSON.stringify(payload) : undefined,
   });
-  return (await res.json()) as { list: EventModel[] };
+  return res;
 };

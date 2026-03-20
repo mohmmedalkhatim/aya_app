@@ -16,6 +16,7 @@ let create_formated_date = (str?: string) => {
 function FloatingButton() {
     let [open, setOpen] = useState(false)
     let add_mediaction = useStore(state => state.add_med)
+    let token = useStore(state => state.keys).access_token
     let [search, setSearch] = useState("")
     return (
         <>
@@ -23,15 +24,14 @@ function FloatingButton() {
                 <div className="grow">
                     <Input onChange={(e) => setSearch(e.target.value)} className="bg-white placeholder:text-[16px] text-[16px] placeholder:capitalize" rightSection={<Link to={`/medicine/search/${search}`}><IconSearch size={"1.2rem"} color="gray" /></Link>} size="xl" placeholder={"search for medicen side effcet"} />
                 </div>
-                <div className=" bg-sky-400 p-3.5 rounded-lg border cursor-pointer hover:border-2" onClick={() => setOpen(true)}><IconPlus size={"1.8rem"} color="white" /></div>
+                <div className=" bg-sky-400 p-3 rounded-md border cursor-pointer hover:ring-2 ring-gray-400" onClick={() => setOpen(true)}><IconPlus size={"1.5rem"} color="white" /></div>
             </div>
             <AnimatePresence>
                 {open && (
                     <motion.dialog open={open} onClose={() => setOpen(false)} className="fixed inset-0 w-full top-20 backdrop-blur-sm flex items-center justify-center z-50" initial={{ opacity: 0, translateY: "2rem" }} animate={{ opacity: 1, translateY: "0rem" }} exit={{ opacity: 0 }}>
                         <Event_form onCancel={() =>
                             setOpen(false)} onSubmit={async (form) => {
-                                let date = create_formated_date(form.time);
-                                add_mediaction({ ...form, time: date.format() },"dosages")
+                                add_mediaction({ ...form },token)
                             }} />
                     </motion.dialog>
                 )}

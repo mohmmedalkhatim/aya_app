@@ -30,7 +30,7 @@ const EventForm: React.FC<EventFormProps> = ({
   isLoading = false
 }) => {
   const [formData, setFormData] = useState<EventModel>({
-    time: "",
+    time: "2026-03-20T00:00:00+02:00",
     dosage: "",
     name: ""
   });
@@ -120,6 +120,7 @@ const EventForm: React.FC<EventFormProps> = ({
 
           <TimePicker
             onChange={(e) => handleChange("time", e)}
+            label="Dosage Time"
             value={formData.time}
           />
 
