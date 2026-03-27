@@ -1,10 +1,4 @@
-use axum::{
-    body::Body,
-    extract::Request,
-    http::Response,
-    routing::get_service,
-    serve, Router,
-};
+use axum::{body::Body, extract::Request, http::Response, routing::get_service, serve, Router};
 use oauth2::{
     basic::{BasicClient, BasicTokenType},
     reqwest::async_http_client,
@@ -14,7 +8,7 @@ use oauth2::{
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, convert::Infallible, sync::Arc};
-use tauri::{ Emitter, Listener, Window};
+use tauri::{Emitter, Listener, Window};
 
 #[tauri::command]
 pub async fn start_oauth_server(window: Window) -> Result<String, String> {
@@ -114,7 +108,7 @@ async fn wait_for_callback(window: Arc<Window>) -> Result<String, String> {
     todo!()
 }
 
-#[derive(Serialize,Deserialize,Clone)]
+#[derive(Serialize, Deserialize, Clone)]
 struct ResponseToken {
     access_token: String,
 }
@@ -122,11 +116,17 @@ async fn save_user_info(
     atomic: Arc<Window>,
     token_res: StandardTokenResponse<EmptyExtraTokenFields, BasicTokenType>,
 ) {
-    let mut body=  HashMap::new();
-    body.insert("token".to_string(), token_res.access_token().secret().as_str().to_string());
+    let mut body = HashMap::new();
+    body.insert(
+        "token".to_string(),
+        token_res.access_token().secret().as_str().to_string(),
+    );
     let info = Client::new();
     let payload = info
         .post("http://localhost:4000/oauth")
-        .form(&body).send().await.unwrap();
+        .form(&body)
+        .send()
+        .await
+        .unwrap();
     let _ = atomic.emit("token", payload.json::<ResponseToken>().await.unwrap());
 }

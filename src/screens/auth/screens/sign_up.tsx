@@ -7,6 +7,8 @@ import { storage } from "../../../main"
 import { useStore } from "../../../context"
 import { invoke } from "@tauri-apps/api/core"
 import { IconBrandGoogle } from "@tabler/icons-react"
+import { hostname } from "@tauri-apps/plugin-os"
+import { setSecret } from "tauri-plugin-keyring-api"
 
 interface RegisterPayload {
     name: string
@@ -67,7 +69,14 @@ function SignUp() {
 
             const data = await response.json()
             setInfo(data)
-            storage.set("keys", data)
+            let name = await hostname() as string
+            let encoder = new TextEncoder()
+            let arr = encoder.encode(data.access_token)
+            setSecret("aya.app", name, arr).then(res => {
+                res
+            }).catch(err =>
+                console.log(err)
+            )
             nevigate("/")
             setSuccess("Account created successfully.")
             console.log("Server response:", data)

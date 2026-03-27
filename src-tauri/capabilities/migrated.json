@@ -11,6 +11,14 @@
     "shell:default",
     "store:default",
     "http:default",
+    "keyring:allow-set-password",
+    "keyring:allow-get-password",
+    "keyring:allow-delete-password",
+    "keyring:allow-get-secret",
+    "keyring:allow-set-secret",
+    "keyring:allow-delete-secret",
+    "keyring:default",
+    "os:allow-hostname",
     {
       "identifier": "http:default",
       "allow": [
@@ -26,6 +34,8 @@
           "url": "https://private.tauri.app"
         }
       ]
-    }
+    },
+    "os:default",
+    "notifications:default"
   ]
 }

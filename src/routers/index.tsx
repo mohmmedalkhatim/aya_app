@@ -1,4 +1,4 @@
-import { createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom";
+import { createBrowserRouter, createRoutesFromElements, Route, Routes } from "react-router-dom";
 import App from "../app";
 import Dashboard from "../screens/Dashboard";
 import SignIn from "../screens/auth/screens/sign_in";
@@ -12,7 +12,7 @@ import Medicine from "../screens/medicine";
 
 export let app_router = createBrowserRouter(
     createRoutesFromElements(
-        <Route element={<App />} >
+        <Route  element={<App />} >
             <Route element={<Dashboard />} index path="/"></Route>
             <Route element={<Calculator />} path="/calculator"></Route>
             <Route element={<Profile />} path="/profile"></Route>

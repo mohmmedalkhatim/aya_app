@@ -41,6 +41,9 @@ tower = "0.5.3"
 serde_urlencoded = "0.7.1"
 jsonwebtoken = "10.3.0"
 bcrypt = "0.19.0"
+tauri-plugin-keyring = "0.1.0"
+tauri-plugin-os = "2"
+tauri-plugin-notifications = {version ="0.4.3",default-features = true}
 
 [features]
 # This feature is used for production builds or when a dev server is not specified, DO NOT REMOVE!!

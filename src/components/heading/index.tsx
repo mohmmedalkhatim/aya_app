@@ -3,7 +3,7 @@ import React, { JSX } from 'react';
 /* ───────────────────────────── Types ───────────────────────────── */
 
 type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
-type HeadingSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+type HeadingSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl';
 type HeadingWeight = 'normal' | 'medium' | 'semibold' | 'bold';
 
 export interface HeadingProps
@@ -23,7 +23,9 @@ const SIZE_CLASSES: Record<HeadingSize, string> = {
   md: 'text-base',
   lg: 'text-lg',
   xl: 'text-xl',
-  '2xl': 'text-2xl'
+  '2xl': 'text-2xl',
+  '3xl': 'text-3xl',
+  '4xl': 'text-4xl'
 };
 
 const WEIGHT_CLASSES: Record<HeadingWeight, string> = {

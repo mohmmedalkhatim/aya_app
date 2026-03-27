@@ -5,23 +5,23 @@ import { Heading } from "../../components/heading"
 
 
 
-function Medicine() {
+function Medicines() {
     let { name } = useParams()
     let [loading, setLoading] = useState(false)
     let [data, setData] = useState<{ name: string, id: string }[]>([])
     let [error, setError] = useState()
     useAsync(async () => {
         setLoading(true)
-        fetch(`http://localhost:4000/medicine/search/${name}`).then(async (res) => {
+        fetch(`http://localhost:4000/medicine/search/${name}`,).then(async (res) => {
             if (res.status == 200) {
                 setData((await res.json()))
             }
         }).catch(error => setError(error)).finally(() => setLoading(false))
-
     }, [name])
 
     return (
-        <main className="container content">
+        <main className="container content w-full">
+            {data.length == 0 && <Heading className="text-center">couldn't find it in the database</Heading>}
             {
                 data.map(item => (
                     <div className="border-b border-2">
@@ -34,4 +34,4 @@ function Medicine() {
         </main>
     )
 }
-export default Medicine
+export default Medicines

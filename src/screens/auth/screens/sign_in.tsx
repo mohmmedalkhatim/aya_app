@@ -6,6 +6,8 @@ import { useStore } from "../../../context"
 import { storage } from "../../../main"
 import { invoke } from "@tauri-apps/api/core"
 import { IconBrandGoogle } from "@tabler/icons-react"
+import { setSecret } from "tauri-plugin-keyring-api"
+import { hostname } from '@tauri-apps/plugin-os'
 interface LoginPassword {
     email: string
     password: string
@@ -58,7 +60,14 @@ function SignIn() {
 
             const data = await response.json()
             setInfo(data)
-            storage.set("keys", data)
+            let name = await hostname() as string
+            let encoder = new TextEncoder()
+            let arr = encoder.encode(data.access_token)
+            setSecret("aya.app", name, arr).then(res => {
+                res
+            }).catch(err =>
+                console.log(err)
+            )
             nevigate("/")
             setSuccess("login successfully.")
 
@@ -70,7 +79,7 @@ function SignIn() {
     }
 
     return (
-        <main className="content pt-60 flex flex-col justify-center h-[30rem]">
+        <main className="content flex h-screen flex-col pt-30">
             <form
                 onSubmit={handleSubmit}
                 className="flex flex-col px-4 gap-6 w-full"
@@ -115,7 +124,7 @@ function SignIn() {
                     <div>
                         don't an account?
                     </div>
-                    <Link viewTransition  className="text-sky-500 underline" to={"/sign_up"}>
+                    <Link viewTransition className="text-sky-500 underline" to={"/sign_up"}>
                         register
                     </Link>
                 </div>

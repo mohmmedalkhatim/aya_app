@@ -14,7 +14,10 @@ let create_formated_date = (str?: string) => {
 }
 
 function FloatingButton() {
-    let [open, setOpen] = useState(false)
+    let [open, setOpen] = useState({
+        medication_dialog: false,
+
+    })
     let add_mediaction = useStore(state => state.add_med)
     let token = useStore(state => state.keys).access_token
     let [search, setSearch] = useState("")
@@ -24,14 +27,29 @@ function FloatingButton() {
                 <div className="grow">
                     <Input onChange={(e) => setSearch(e.target.value)} className="bg-white placeholder:text-[16px] text-[16px] placeholder:capitalize" rightSection={<Link to={`/medicine/search/${search}`}><IconSearch size={"1.2rem"} color="gray" /></Link>} size="xl" placeholder={"search for medicen side effcet"} />
                 </div>
-                <div className=" bg-sky-400 p-3 rounded-md border cursor-pointer hover:ring-2 ring-gray-400" onClick={() => setOpen(true)}><IconPlus size={"1.5rem"} color="white" /></div>
+                <div>
+                    <div className="bg-sky-400 p-3 rounded-md border cursor-pointer hover:ring-2 ring-gray-400"
+                        onClick={() => setOpen((prv) => ({
+                            ...prv,
+                            medication_dialog: true,
+                        }))}>
+                        <IconPlus size={"1.5rem"} color="white" />
+                    </div>
+
+                </div>
             </div>
             <AnimatePresence>
-                {open && (
-                    <motion.dialog open={open} onClose={() => setOpen(false)} className="fixed inset-0 w-full top-20 backdrop-blur-sm flex items-center justify-center z-50" initial={{ opacity: 0, translateY: "2rem" }} animate={{ opacity: 1, translateY: "0rem" }} exit={{ opacity: 0 }}>
+                {open.medication_dialog && (
+                    <motion.dialog open={open.medication_dialog} onClose={() => setOpen((prv) => ({
+                        ...prv,
+                        medication_dialog: true,
+                    }))} className="fixed inset-0 w-full top-20 backdrop-blur-sm flex items-center justify-center z-50" initial={{ opacity: 0, translateY: "2rem" }} animate={{ opacity: 1, translateY: "0rem" }} exit={{ opacity: 0 }}>
                         <Event_form onCancel={() =>
-                            setOpen(false)} onSubmit={async (form) => {
-                                add_mediaction({ ...form },token)
+                            setOpen((prv) => ({
+                                ...prv,
+                                medication_dialog: false,
+                            }))} onSubmit={async (form) => {
+                                add_mediaction({ ...form }, token)
                             }} />
                     </motion.dialog>
                 )}

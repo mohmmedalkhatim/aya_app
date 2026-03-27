@@ -1,29 +1,29 @@
-import { Outlet, useNavigate } from "react-router-dom"
+import { Outlet, useLocation, useNavigate } from "react-router-dom"
 import Header from "./components/Header"
 // @ts-ignore
 import "./index.css"
 import FloatingButton from "./components/floating_button"
 import { useStore } from "./context"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 
 function App() {
   let access_token = useStore(state => state.keys.access_token)
-  let login = access_token !== "";
+  let login = access_token !== ""
   let navigate = useNavigate()
+  let location = useLocation()
   useEffect(() => {
-    if (login) {
-      navigate("/")
-    } else {
-      navigate("/sign_in")
+    const isAuthPage = location.pathname === "/sign_in"
+    if (!login && !isAuthPage) {
+      navigate("/sign_in", { replace: true, viewTransition: true })
+    } else if (login && isAuthPage) {
+      navigate("/", { replace: true, viewTransition: true })
     }
-  }, [access_token])
-  return login ? (
-    <>
-      <Header />
-      <Outlet />
-      <FloatingButton />
-    </>
-  ) : <Outlet />
+  }, [access_token, location.pathname])
+  return (<>
+    {login && <Header />}
+    <Outlet />
+    {login && <FloatingButton />}
+  </>)
 }
 export default App

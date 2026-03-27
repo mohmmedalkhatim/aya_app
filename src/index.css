@@ -115,48 +115,13 @@ html.lenis body {
   .order {
     @apply absolute w-[10rem] rounded;
   }
-}
 
-.carousel {
-  display: flex;
-  overflow-x: hidden;
-  overflow-y: hidden;
-  gap: 1rem;
-  padding: 1rem;
-  scroll-behavior: smooth;
-
-  li {
-    border-radius: 3px;
-    min-width: 20rem;
-    min-height: 20rem;
-  }
-}
-
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-
-.lenis.lenis-stopped {
-  overflow: clip;
-}
-
-.lenis.lenis-smooth iframe {
-  pointer-events: none;
-}
-
-@font-face {
-  font-family: Alro;
-  src: url(/fonts/Quicksand_wght.ttf);
-}
-
-main {}
-
-@layer components {
   .content {
     @apply px-4;
   }
-  .container{
-    @apply pt-[6rem] pb-30  px-4;
+
+  .container {
+    @apply pt-[6rem] pb-30 px-4;
   }
 
   .dashboard_head {
@@ -193,4 +158,50 @@ main {}
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
   }
+
+  html,
+  body {
+    height: 100%;
+  }
+
+  html {
+    scroll-behavior: auto;
+    scrollbar-gutter:right;
+  }
 }
+
+.carousel {
+  display: flex;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  gap: 1rem;
+  padding: 1rem;
+  scroll-behavior: smooth;
+
+  li {
+    border-radius: 3px;
+    min-width: 20rem;
+    min-height: 20rem;
+  }
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+@font-face {
+  font-family: Alro;
+  src: url(/fonts/Quicksand_wght.ttf);
+}
+
+main {}
+
+@layer components {}

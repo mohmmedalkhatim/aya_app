@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 import { storage } from '../main';
-import { data } from 'react-router-dom';
 import { EventModel } from '../components/event_form';
 import { fetch } from '@tauri-apps/plugin-http';
+
 
 export type Data = {
   dosages: EventModel[];
@@ -14,6 +14,8 @@ export type Keys = {
 export interface medications_ui_state {
   data: Data;
   keys: Keys;
+  user_info: { name: string; email: string };
+  onLine: boolean;
   setInfo: (keys: Keys) => void;
   setData: (data: Data) => void;
   add_med: (med: EventModel, type: string) => Promise<void>;
@@ -22,8 +24,13 @@ export interface medications_ui_state {
 }
 
 export let useStore = create<medications_ui_state>(set => ({
+  onLine: false,
   data: {
     dosages: [],
+  },
+  user_info: {
+    email: '',
+    name: '',
   },
   keys: {
     access_token: '',
@@ -34,6 +41,7 @@ export let useStore = create<medications_ui_state>(set => ({
   setInfo: keys => {
     set({ keys });
   },
+
   init: async token => {
     let data = await storage.get<Data>('information');
     if (data && data?.dosages) {
@@ -48,6 +56,7 @@ export let useStore = create<medications_ui_state>(set => ({
         storage.set('information', { dosages: body.list });
         console.log(body.list);
         set(state => ({
+          ...state,
           data: { dosages: body.list },
         }));
       }
@@ -61,6 +70,7 @@ export let useStore = create<medications_ui_state>(set => ({
       storage.set('information', { dosages: body.list });
       console.log(body.list);
       set(state => ({
+        ...state,
         data: { dosages: [...state.data?.dosages, ...body.list] },
       }));
     }
@@ -73,6 +83,7 @@ export let useStore = create<medications_ui_state>(set => ({
       storage.set('information', { dosages: body.list });
       console.log(body.list);
       set(state => ({
+        ...state,
         data: { dosages: [...state.data?.dosages, ...body.list] },
       }));
     }

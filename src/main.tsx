@@ -3,27 +3,63 @@ import { RouterProvider } from "react-router-dom";
 import { app_router } from "./routers";
 import { load, Store } from '@tauri-apps/plugin-store';
 import { Keys, useStore } from "./context";
+import { getSecret, setSecret } from "tauri-plugin-keyring-api"
+import { hostname } from "@tauri-apps/plugin-os";
+import { schadule } from "./schadule";
 
 let root = client.createRoot(document.getElementById("root") as HTMLDivElement);
 
 export let storage: Store;
 
+import { useEffect } from "react";
+import Lenis from "@studio-freight/lenis";
+
+
+
+
+
+
+
 function App() {
-    return (
-        <RouterProvider router={app_router} />
-    )
+    useEffect(() => {
+        const lenis = new Lenis({
+            duration: 1.2,
+            smoothWheel: true,
+            syncTouch: true,
+            autoResize: true
+        });
+
+        function raf(time: number) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+
+        requestAnimationFrame(raf);
+
+        return () => {
+            lenis.destroy();
+        };
+    }, []);
+
+    return <RouterProvider router={app_router} />;
 }
 
-load("storage").then((res) => {
+(async () => {
+    let res = await load("storage");
     storage = res;
-    storage.get<Keys>("keys").then((keys) => {
-        if (keys) useStore.setState({ keys })
-        root.render(
-            <App />
-        )
-    })
 
-})
+    let name = await hostname() as string;
+
+    await getSecret("aya.app", name).then((keys) => {
+        if (keys) {
+            let decoder = new TextDecoder();
+            let str = decoder.decode(keys);
+            useStore.setState({ keys: { access_token: str } });
+        }
+    });
+    schadule()
+    root.render(<App />);
+})();
 
 
 

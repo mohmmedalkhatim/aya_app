@@ -12,7 +12,6 @@ function Events() {
   let init = useStore((state) => state.init)
   useAsync(async () => {
     await init(token)
-    console.log(Medications)
   }, [])
   useInterval(() => {
     setHour(25 - dayjs().hour())
@@ -30,7 +29,7 @@ function Events() {
         <div className="border translate-x-1.25"></div>
         <div className="gap-20 flex flex-col z-10">
           {Array.from({ length: hour }).map((_, index) => (
-            <div className="relative ">
+            <div key={`hour:${index}`} className="relative ">
               <div className="absolute -translate-x-3   translate-y-4 text-xs bg-white z-10" style={{ letterSpacing: "1px" }}>{dayjs().add(index, "h").format("HH:00")}</div>
               <div className="rounded-full w-2 h-2 bg-sky-500"></div>
             </div>
@@ -42,9 +41,8 @@ function Events() {
           Medications?.map(
             (item, index) => {
               let date = dayjs(item.time)
-              console.log(date)
               if (date.hour() < dayjs().hour()) return ""
-              return (<div style={{ top: `${((date.hour() - dayjs().hour() )) * 89}px`, translate:`0 calc(89px/60*${date.minute()})`,zIndex:String(-index+1) }} className="bg-sky-400 shadow absolute  w-full text-sky-50 px-2 py-4 border border-l-5 rounded border-l-sky-200" >
+              return (<div key={`med:${index}`} style={{ top: `${((date.hour() - dayjs().hour() )) * 89}px`, translate:`0 calc(89px/60*${date.minute()})`,zIndex:String(-index+1) }} className="bg-sky-400 shadow absolute  w-full text-sky-50 px-2 py-4 border border-l-5 rounded border-l-sky-200" >
                 {item.time}
               </div>)
             })
