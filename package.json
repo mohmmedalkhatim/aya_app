@@ -31,6 +31,9 @@
     "@tauri-apps/plugin-os": "^2.3.2",
     "@tauri-apps/plugin-shell": "^2.2.0",
     "@tauri-apps/plugin-store": "^2.2.0",
+    "@tensorflow/tfjs-backend-webgl": "^4.9.0",
+    "@tensorflow/tfjs-core": "^4.9.0",
+    "@tensorflow/tfjs-tflite": "^0.0.1-alpha.10",
     "@tiptap/extension-highlight": "^2.11.5",
     "@tiptap/extension-placeholder": "^2.11.5",
     "@tiptap/extension-text-align": "^2.11.5",
@@ -51,6 +54,7 @@
     "tailwind-merge": "^3.4.1",
     "tauri-plugin-keyring-api": "^0.1.1",
     "tauri-plugin-store-api": "^0.0.0",
+    "tesseract.js": "^7.0.0",
     "zustand": "^5.0.3"
   },
   "devDependencies": {
