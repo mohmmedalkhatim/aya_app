@@ -6,7 +6,13 @@ import { Keys, useStore } from "./context";
 import { getSecret, setSecret } from "tauri-plugin-keyring-api"
 import { hostname } from "@tauri-apps/plugin-os";
 import { schadule } from "./schadule";
+import { initDetector } from "./lib/detector";
+import { initOcr } from "./lib/ocr";
 
+// Boot sequence - runs once, in parallel with the UI rendering
+Promise.all([initDetector(), initOcr()])
+  .then(() => console.log("[AYA] On-device AI ready"))
+  .catch(err => console.error("[AYA] AI init failed:", err));
 let root = client.createRoot(document.getElementById("root") as HTMLDivElement);
 
 export let storage: Store;
