@@ -1,5 +1,5 @@
 import { IconPlus, IconSearch } from "@tabler/icons-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { AnimatePresence, motion } from "motion/react"
 import Event_form from "../event_form"
 import dayjs from "dayjs"
@@ -16,14 +16,14 @@ let create_formated_date = (str?: string) => {
 function FloatingButton() {
     let [open, setOpen] = useState({
         medication_dialog: false,
-
     })
     let add_mediaction = useStore(state => state.add_med)
-    let token = useStore(state => state.keys).access_token
+    let token = useStore(state => state.keys.access_token)
     let [search, setSearch] = useState("")
+
     return (
         <>
-            <div className="fixed bottom-0  gap-3 z-50 mx-5 flex w-full rounded-t-2xl border p-4 items-center bg-white ">
+            <footer hidden={token == ""}  className="fixed bottom-0 h-auto  gap-3 z-50 mx-5 flex w-full rounded-t-2xl border p-4 items-center bg-white ">
                 <div className="grow">
                     <Input onChange={(e) => setSearch(e.target.value)} className="bg-white placeholder:text-[16px] text-[16px] placeholder:capitalize" rightSection={<Link to={`/medicine/search/${search}`}><IconSearch size={"1.2rem"} color="gray" /></Link>} size="xl" placeholder={"search for medicen side effcet"} />
                 </div>
@@ -37,7 +37,7 @@ function FloatingButton() {
                     </div>
 
                 </div>
-            </div>
+            </footer>
             <AnimatePresence>
                 {open.medication_dialog && (
                     <motion.dialog open={open.medication_dialog} onClose={() => setOpen((prv) => ({

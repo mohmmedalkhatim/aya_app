@@ -12,7 +12,7 @@ import Medicine from "../screens/medicine";
 
 export let app_router = createBrowserRouter(
     createRoutesFromElements(
-        <Route  element={<App />} >
+        <Route element={<App />} >
             <Route element={<Dashboard />} index path="/"></Route>
             <Route element={<Calculator />} path="/calculator"></Route>
             <Route element={<Profile />} path="/profile"></Route>

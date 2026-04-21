@@ -22,8 +22,8 @@ function Events() {
   }, 60000)
 
   return (
-    <div className="flex pt-4 gap-6 relative flex-col">
-      <div className="rounded py-8 px-3">
+    <div className="flex  gap-6 relative flex-col">
+      <div className="rounded py-4 px-3">
         <div className="flex flex-col grow gap-1 relative">
           {
             Medications?.map(

@@ -14,15 +14,15 @@ function App() {
   useEffect(() => {
     const isAuthPage = location.pathname === "/sign_in"
     if (access_token == "" && !isAuthPage) {
-      navigate("/sign_up", { replace: true, viewTransition: true })
-    } else if (access_token !== "" && isAuthPage) {
       navigate("/sign_in", { replace: true, viewTransition: true })
+    } else if (access_token !== "" && isAuthPage) {
+      navigate("/", { replace: true, viewTransition: true })
     }
   }, [access_token, location.pathname])
   return (<>
-    {access_token !== "" && <Header />}
+    <Header />
     <Outlet />
-    {access_token !== "" && <FloatingButton />}
+    <FloatingButton />
   </>)
 }
 export default App

@@ -35,7 +35,7 @@ let dataFetch = (access_token: String, setData: (data: Data) => void, setLoading
     }).then((data) => {
       if (data) {
         data.json().then((json) => {
-          useStore.setState({onLine:true})
+          useStore.setState({ onLine: true })
           useStore.setState({ user_info: json })
         })
       }
@@ -50,7 +50,7 @@ let dataFetch = (access_token: String, setData: (data: Data) => void, setLoading
 
 
 function Header(props: Header_Props) {
-  let setInfo = useStore(state => state.setInfo)
+  let keys = useStore(state => state.keys)
   let date = dayjs().hour()
   let navigate = useNavigate()
   let name = useStore(state => state.user_info.name)
@@ -59,34 +59,35 @@ function Header(props: Header_Props) {
   let [loading, setLoading] = useState(false)
   let [Error, setError] = useState("")
   let setData = useStore(state => state.setData)
-  useEffect(dataFetch(access_token, setData, setLoading, setError), [])
+  useEffect(dataFetch(access_token, setData, setLoading, setError), [keys])
   return (
-    <header className={'border-b py-4 text-sm h-20 pl-4  items-center  fixed top-0 w-full bg-white '} {...props}>
+    <header hidden={access_token == ""} className={`border-b py-4 text-sm h-20 pl-4  items-center  top-0 w-full bg-white `} {...props}>
       <div className="fixed top-7 right-20 z-60">
         {loading ? <IconCloudDataConnection /> : Error !== "" ? <IconCloudOff /> : <IconCloudCheck />}
       </div>
-      {location.pathname !== "/profile" ?
-        <div>
-          <div className='flex md:hidden content items-center justify-between gap-4 '>
-            <div className='flex gap-4 items-center'>
-              <div>
-                <h5>{date > 12 ? "Good eveing" : "Good morning"}</h5>
-                <div className='text-gray-400/80'>{name}</div>
+      {
+        location.pathname !== "/profile" ?
+          <div>
+            <div className='flex md:hidden content items-center justify-between gap-4 '>
+              <div className='flex gap-4 items-center'>
+                <div>
+                  <h5>{date > 12 ? "Good eveing" : "Good morning"}</h5>
+                  <div className='text-gray-400/80'>{name}</div>
+                </div>
               </div>
+              <Link className='bg-sky-400 rounded-full p-2 cursor-pointer' viewTransition to={"/profile"}>
+                <IconUser color='white' />
+              </Link>
             </div>
-            <Link className='bg-sky-400 rounded-full p-2 cursor-pointer' viewTransition to={"/profile"}>
-              <IconUser color='white' />
-            </Link>
+          </div> :
+          <div className='h-full w-full flex items-center'>
+            <Button variant="secondary" className='bg-white' onClick={(e) => { e.preventDefault(); navigate("/", { viewTransition: true }) }}>
+              <IconArrowLeft size={"1.2rem"} />
+              <Heading>
+                Dashboard
+              </Heading>
+            </Button>
           </div>
-        </div> :
-        <div className='h-full w-full flex items-center'>
-          <Button variant="secondary" className='bg-white' onClick={(e) => { e.preventDefault(); navigate("/", { viewTransition: true }) }}>
-            <IconArrowLeft size={"1.2rem"} />
-            <Heading>
-              Dashboard
-            </Heading>
-          </Button>
-        </div>
       }
     </header>
   );

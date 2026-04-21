@@ -11,6 +11,7 @@ import {
   setPassword,
   setSecret,
 } from 'tauri-plugin-keyring-api';
+import { data } from 'react-router-dom';
 
 export type Data = {
   dosages: EventModel[];
@@ -56,20 +57,25 @@ export let useStore = create<medications_ui_state>(set => ({
         data: data,
       }));
     }
+
     let res = await apiCall({ token });
     if (res) {
       let payload = await dencrpyt(res.hash);
       storage.set('information', payload);
-      set(state => ({
-        data: payload,
-      }));
+      set(state => {
+        if (state.onLine) {
+          encrpyt(state.data).then(res => {
+            apiCall({ method: 'POST', token, payload: res });
+          });
+        }
+        return {
+          data: payload,
+        };
+      });
     }
   },
   add_med: async (payload, token) => {
     let data = await storage.get<Data>('information');
-    if(data){
-
-    }
     set(state => {
       storage.set('information', {
         dosages: [...state.data?.dosages, payload],

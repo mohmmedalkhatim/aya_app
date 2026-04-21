@@ -54,6 +54,7 @@ function SignUp() {
 
         try {
             setLoading(true)
+            
             const response = await fetch("http://localhost:4000/auth/register", {
                 method: "POST",
                 headers: {
@@ -61,10 +62,9 @@ function SignUp() {
                 },
                 body: JSON.stringify(form)
             })
-            console.log(response)
             if (!response.ok) {
                 const message = await response.text()
-                throw new Error(message || "Registration failed")
+                setError("Registration failed:" + message)
             }
 
             const data = await response.json()

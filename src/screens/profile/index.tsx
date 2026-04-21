@@ -12,9 +12,9 @@ function Profile() {
   let setInfo = useStore(state => state.setInfo)
   let navigate = useNavigate()
   let logout = async () => {
+    navigate("/login", { viewTransition: true, replace: true })
     let name = await hostname();
     storage.clear()
-    navigate("/login", { viewTransition: true, replace: true })
     await deleteSecret("aya.app", name as string)
     setInfo({ access_token: "" })
   }

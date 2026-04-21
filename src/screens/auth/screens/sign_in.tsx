@@ -52,7 +52,6 @@ function SignIn() {
                 },
                 body: JSON.stringify(form)
             })
-            console.log(response)
             if (!response.ok) {
                 const message = await response.text()
                 setError("Registration failed")
@@ -61,6 +60,8 @@ function SignIn() {
             const data = await response.json()
             setInfo(data)
             let name = await hostname() as string
+            
+            console.log(data.access_token)
             setPassword("aya.app", name, data.access_token).then(res => {
                 res
             }).catch(err =>
