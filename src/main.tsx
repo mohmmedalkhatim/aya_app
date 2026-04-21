@@ -5,14 +5,20 @@ import { load, Store } from '@tauri-apps/plugin-store';
 import { Keys, useStore } from "./context";
 import { getPassword, getSecret, setSecret } from "tauri-plugin-keyring-api"
 import { hostname } from "@tauri-apps/plugin-os";
-import { schedule } from "./schadule";
+import {  schedule } from "./schadule";
 
+// Boot sequence - runs once, in parallel with the UI rendering
+Promise.all([initDetector(), initOcr()])
+  .then(() => console.log("[AYA] On-device AI ready"))
+  .catch(err => console.error("[AYA] AI init failed:", err));
 let root = client.createRoot(document.getElementById("root") as HTMLDivElement);
 
 export let storage: Store;
 
 import { useEffect } from "react";
 import Lenis from "@studio-freight/lenis";
+import { initDetector } from "./lib/detector";
+import { initOcr } from "./lib/ocr";
 
 
 function App() {

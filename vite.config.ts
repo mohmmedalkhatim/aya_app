@@ -17,5 +17,13 @@ export default defineConfig(async () => ({
       // 3. tell vite to ignore watching `src-tauri`
       ignored: ['**/src-tauri/**']
     }
-  }
+  },
+  optimizeDeps: {
+    exclude: ['@tensorflow/tfjs-tflite'],
+  },
+  build: {
+    rollupOptions: {
+      external: ['@tensorflow/tfjs-tflite'],
+    },
+  },
 }))
