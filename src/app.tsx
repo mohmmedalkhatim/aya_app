@@ -9,21 +9,20 @@ import { useEffect, useState } from "react"
 
 function App() {
   let access_token = useStore(state => state.keys.access_token)
-  let login = access_token !== ""
   let navigate = useNavigate()
   let location = useLocation()
   useEffect(() => {
     const isAuthPage = location.pathname === "/sign_in"
-    if (!login && !isAuthPage) {
+    if (access_token == "" && !isAuthPage) {
+      navigate("/sign_up", { replace: true, viewTransition: true })
+    } else if (access_token !== "" && isAuthPage) {
       navigate("/sign_in", { replace: true, viewTransition: true })
-    } else if (login && isAuthPage) {
-      navigate("/", { replace: true, viewTransition: true })
     }
   }, [access_token, location.pathname])
   return (<>
-    {login && <Header />}
+    {access_token !== "" && <Header />}
     <Outlet />
-    {login && <FloatingButton />}
+    {access_token !== "" && <FloatingButton />}
   </>)
 }
 export default App

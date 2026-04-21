@@ -3,9 +3,9 @@ import { RouterProvider } from "react-router-dom";
 import { app_router } from "./routers";
 import { load, Store } from '@tauri-apps/plugin-store';
 import { Keys, useStore } from "./context";
-import { getSecret, setSecret } from "tauri-plugin-keyring-api"
+import { getPassword, getSecret, setSecret } from "tauri-plugin-keyring-api"
 import { hostname } from "@tauri-apps/plugin-os";
-import { schadule } from "./schadule";
+import { schedule } from "./schadule";
 
 let root = client.createRoot(document.getElementById("root") as HTMLDivElement);
 
@@ -13,11 +13,6 @@ export let storage: Store;
 
 import { useEffect } from "react";
 import Lenis from "@studio-freight/lenis";
-
-
-
-
-
 
 
 function App() {
@@ -50,14 +45,12 @@ function App() {
 
     let name = await hostname() as string;
 
-    await getSecret("aya.app", name).then((keys) => {
-        if (keys) {
-            let decoder = new TextDecoder();
-            let str = decoder.decode(keys);
-            useStore.setState({ keys: { access_token: str } });
+    await getPassword("aya.app", name).then((key) => {
+        if (key) {
+            useStore.setState({ keys: { access_token: key } });
         }
     });
-    schadule()
+    await schedule()
     root.render(<App />);
 })();
 

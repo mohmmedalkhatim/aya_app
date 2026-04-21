@@ -35,7 +35,7 @@ let dataFetch = (access_token: String, setData: (data: Data) => void, setLoading
     }).then((data) => {
       if (data) {
         data.json().then((json) => {
-          console.log(json)
+          useStore.setState({onLine:true})
           useStore.setState({ user_info: json })
         })
       }

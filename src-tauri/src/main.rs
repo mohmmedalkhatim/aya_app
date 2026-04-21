@@ -12,6 +12,7 @@ struct DbConnection {
     db: Option<DatabaseConnection>,
 }
 
+#[cfg_attr(mobile, tauri::mobile_entry_point)]
 #[tokio::main]
 async fn main() {
     let mut builder = tauri::Builder::default()
@@ -39,7 +40,7 @@ async fn main() {
                 .path()
                 .resolve("Database\\test.db", BaseDirectory::AppData)
                 .unwrap();
-            let store = StoreBuilder::new(app.app_handle(), "main").build().unwrap();
+            let _store = StoreBuilder::new(app.app_handle(), "main").build().unwrap();
             if !database_url.exists() {
                 std::fs::create_dir_all(database_url.parent().unwrap()).unwrap();
                 std::fs::File::create(&database_url).unwrap();

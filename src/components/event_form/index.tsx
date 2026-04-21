@@ -2,16 +2,22 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   IconChevronLeft,
   IconDeviceFloppy,
+  IconDeviceWatch,
+  IconScan,
+  IconStopwatch,
+  IconTimeline,
+  IconX,
 } from '@tabler/icons-react';
 import DataInput from '../data_input';
 import TimePicker from '../time_picker';
+import { Button } from '../Button/Button';
 
 /* ───────────────────────────── Types ───────────────────────────── */
 
 export interface EventModel {
   dosage: string;
   name: string;
-  time: string;
+  times: string[];
 }
 
 interface EventFormProps {
@@ -30,7 +36,7 @@ const EventForm: React.FC<EventFormProps> = ({
   isLoading = false
 }) => {
   const [formData, setFormData] = useState<EventModel>({
-    time: "2026-03-20T00:00:00+02:00",
+    times: ["2026-03-20T00:00:00+02:00"],
     dosage: "",
     name: ""
   });
@@ -44,12 +50,38 @@ const EventForm: React.FC<EventFormProps> = ({
   const handleChange = useCallback((field: keyof EventModel, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   }, []);
+  const handleTimedsChange = useCallback((id: number, value: any) => {
+    setFormData(prev => {
+      let list = prev.times.map((item, index) => {
+        if (id == index) {
+          return value;
+        } else {
+          return item;
+        }
+      })
+      return ({ ...prev, times: list })
+    });
+  }, []);
+  const handleTimedsRemove = useCallback((id: number) => {
+    setFormData(prev => {
+      let list = prev.times.filter((_, index) => index !== id)
+      return ({ ...prev, times: list })
+    });
+  }, []);
+  const handleAddingTimes = useCallback(() => {
+    setFormData(prev => {
+      let list = prev.times;
+      list.push("2026-03-20T00:00:00+02:00");
+      return ({ ...prev, times: list })
+    });
+  }, []);
+
+
 
   const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     onSubmit(formData);
   }, [formData, onSubmit]);
-
 
   /* ───────────── Select Options ───────────── */
 
@@ -72,6 +104,7 @@ const EventForm: React.FC<EventFormProps> = ({
             <h1 className="text-lg font-semibold text-gray-900">
               {initialData ? 'Edit Event' : 'Add Medition'}
             </h1>
+
 
           </div>
           <div className="flex items-center space-x-2">
@@ -116,15 +149,53 @@ const EventForm: React.FC<EventFormProps> = ({
 
         </div>
 
-        {<div className="space-y-3 flex flex-col gap-4">
+        <div>schadule</div>
+        <div className="space-y-3 flex flex-col gap-4">
 
           <TimePicker
-            onChange={(e) => handleChange("time", e)}
-            label="Dosage Time"
-            value={formData.time}
+            onChange={(e) => handleTimedsChange(0, e)}
+            value={formData.times[0]}
           />
+          {formData.times.map((time, index) => {
+            if (index == 0) {
+              return;
+            }
+            return (
+              <div className='flex items-center'>
 
-        </div>}
+                <div className='grow'>
+                  <TimePicker
+                    onChange={(e) => handleTimedsChange(index + 1, e)}
+                    value={time}
+                  />
+                </div>
+                <Button variant='ghost' className='border rounded-sm h-full' size='action' onClick={(e) => {
+                  e.preventDefault();
+                  handleTimedsRemove(index);
+                }}>
+                  <div className='flex w-full items-center justify-between'>
+                    <IconX />
+                  </div>
+                </Button>
+              </div>
+            )
+          })}
+
+          <Button variant='ghost' className='border' onClick={(e) => {
+            e.preventDefault()
+            handleAddingTimes()
+          }}>
+            <div className='flex w-full items-center justify-between'>
+              <div>add schadule </div>
+              <IconStopwatch />
+            </div>
+          </Button>
+
+          <Button variant='ghost' className='border flex justify-between'>
+            <div>Ai search For medicine </div>
+            <IconScan />
+          </Button>
+        </div>
       </div>
     </form>
   );

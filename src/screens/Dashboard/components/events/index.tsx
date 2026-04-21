@@ -2,6 +2,9 @@ import dayjs from "dayjs"
 import { useState } from "react";
 import { useAsync, useInterval } from "react-use";
 import { useStore } from "../../../../context";
+import { Heading } from "../../../../components/heading";
+import { IconEdit } from "@tabler/icons-react";
+import { Button } from "../../../../components/Button/Button";
 
 
 function Events() {
@@ -19,34 +22,40 @@ function Events() {
   }, 60000)
 
   return (
-    <div className="flex pt-4 gap-6 relative">
-      <div className="absolute h-22.25 w-[96%]  flex items-center justify-center top-4.75 pl-4" >
-        <div className="absolute bg-sky-500 w-2 h-2 left-3.75 rounded  z-14" style={{ top: `${(minute / 60) * 100}%` }}></div>
-        <div className="w-full absolute border left-4.25" style={{ top: `calc(${((minute) / 60) * 100}% + 3px)` }}>
+    <div className="flex pt-4 gap-6 relative flex-col">
+      <div className="rounded py-8 px-3">
+        <div className="flex flex-col grow gap-1 relative">
+          {
+            Medications?.map(
+              (med, index) => {
+                return (
+                  <div>
+                    <div className="font- text-lg pl-2 pb-3 pt-2">
+                      {med.name}
+                    </div>
+                    {
+                      (med.times.map((item) => {
+                        let date = dayjs(item)
+                        return (
+                          <div key={index} className="border flex justify-between items-center shadow gap-1  w-full px-4 py-4 border-l-5 rounded bg-white border-l-black">
+                            <div>
+                              {date.format("hh:mm A")}
+                            </div>
+                            <Button
+                              variant="ghost"
+                              className="fixed top-0 right-0 h-fixed"
+                              size="action">
+                              <IconEdit />
+                            </Button>
+                          </div>
+                        )
+                      }))
+                    }
+                  </div>
+                )
+              })
+          }
         </div>
-      </div>
-      <div className="flex w-9 justify-center relative ">
-        <div className="border translate-x-1.25"></div>
-        <div className="gap-20 flex flex-col z-10">
-          {Array.from({ length: hour }).map((_, index) => (
-            <div key={`hour:${index}`} className="relative ">
-              <div className="absolute -translate-x-3   translate-y-4 text-xs bg-white z-10" style={{ letterSpacing: "1px" }}>{dayjs().add(index, "h").format("HH:00")}</div>
-              <div className="rounded-full w-2 h-2 bg-sky-500"></div>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="flex flex-col grow relative">
-        {
-          Medications?.map(
-            (item, index) => {
-              let date = dayjs(item.time)
-              if (date.hour() < dayjs().hour()) return ""
-              return (<div key={`med:${index}`} style={{ top: `${((date.hour() - dayjs().hour() )) * 89}px`, translate:`0 calc(89px/60*${date.minute()})`,zIndex:String(-index+1) }} className="bg-sky-400 shadow absolute  w-full text-sky-50 px-2 py-4 border border-l-5 rounded border-l-sky-200" >
-                {item.time}
-              </div>)
-            })
-        }
       </div>
     </div>
   )

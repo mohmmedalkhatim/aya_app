@@ -46,15 +46,8 @@ function TimePicker(props: TimePicker) {
             </div>
             {/* Timepicker */}
             {IsOpen &&
-                <div className="rounded  translate-y-2 shadow flex flex-col gap-3  absolute w-full bg-white" ref={timePickerRef}>
-                    <div className="border-b flex gap-2 py-2 items-center justify-center">
-                        <div>
-                            {date}
-                        </div>
-                        <div>
-                            {intervel}
-                        </div>
-                    </div>
+                <div className="rounded  translate-y-2 pt-3 shadow flex flex-col gap-3 z-100  absolute w-full bg-white" ref={timePickerRef}>
+
                     <div className="flex w-full">
                         <div className="overflow-auto flex flex-col px-3 gap-1 h-50 grow" >
                             {Array.from({ length: 12 }).map((_, index) => (

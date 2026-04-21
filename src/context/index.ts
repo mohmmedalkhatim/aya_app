@@ -2,7 +2,15 @@ import { create } from 'zustand';
 import { storage } from '../main';
 import { EventModel } from '../components/event_form';
 import { fetch } from '@tauri-apps/plugin-http';
-
+import bcrypt from 'crypto-js';
+import { v7 } from 'uuid';
+import { useKey } from 'react-use';
+import {
+  getPassword,
+  getSecret,
+  setPassword,
+  setSecret,
+} from 'tauri-plugin-keyring-api';
 
 export type Data = {
   dosages: EventModel[];
@@ -20,7 +28,6 @@ export interface medications_ui_state {
   setData: (data: Data) => void;
   add_med: (med: EventModel, type: string) => Promise<void>;
   init: (access: string) => Promise<void>;
-  update_med: (med: EventModel, type: 'dosages' | 'events') => Promise<void>;
 }
 
 export let useStore = create<medications_ui_state>(set => ({
@@ -44,69 +51,78 @@ export let useStore = create<medications_ui_state>(set => ({
 
   init: async token => {
     let data = await storage.get<Data>('information');
-    if (data && data?.dosages) {
+    if (data) {
       set(state => ({
         data: data,
       }));
-    } else {
-      let res = await apiCall({ token });
-      console.log(res.status);
-      if (res.ok) {
-        let body = await res.json();
-        storage.set('information', { dosages: body.list });
-        console.log(body.list);
-        set(state => ({
-          ...state,
-          data: { dosages: body.list },
-        }));
-      }
+    }
+    let res = await apiCall({ token });
+    if (res) {
+      let payload = await dencrpyt(res.hash);
+      storage.set('information', payload);
+      set(state => ({
+        data: payload,
+      }));
     }
   },
   add_med: async (payload, token) => {
-    let res = await apiCall({ method: 'POST', token, payload });
-    console.log(res);
-    if (res.ok) {
-      let body = await res.json();
-      storage.set('information', { dosages: body.list });
-      console.log(body.list);
-      set(state => ({
-        ...state,
-        data: { dosages: [...state.data?.dosages, ...body.list] },
-      }));
+    let data = await storage.get<Data>('information');
+    if(data){
+
     }
-  },
-  update_med: async (payload, token) => {
-    let res = await apiCall({ method: 'POST', token, payload });
-    console.log(res);
-    if (res.ok) {
-      let body = await res.json();
-      storage.set('information', { dosages: body.list });
-      console.log(body.list);
-      set(state => ({
+    set(state => {
+      storage.set('information', {
+        dosages: [...state.data?.dosages, payload],
+      });
+      return {
         ...state,
-        data: { dosages: [...state.data?.dosages, ...body.list] },
-      }));
-    }
+        data: { dosages: [...state.data?.dosages, payload] },
+      };
+    });
   },
 }));
+let dencrpyt = async (payload: String): Promise<Data> => {
+  let name = useStore.getState().user_info.name;
+  let stored_key = await getPassword('encryption_key', name);
+  let key = '';
+  if (stored_key) {
+    key = stored_key.toString();
+  } else {
+    let uuid = v7();
+    setPassword('encryption_key', name, uuid);
+  }
+  return JSON.parse(
+    bcrypt.AES.decrypt(JSON.stringify(payload), key).toString()
+  );
+};
+let encrpyt = async (payload: Data) => {
+  let name = useStore.getState().user_info.name;
+  let stored_key = await getPassword('encryption_key', name);
+  if (stored_key) {
+    return JSON.stringify({
+      hash: bcrypt.AES.encrypt(JSON.stringify(payload), stored_key).toString(),
+    });
+  }
+};
 
-let apiCall = async ({
+async function apiCall ({
   method = 'GET',
   token,
   payload,
 }: {
   method?: 'POST' | 'PUT' | 'GET';
   token: string;
-  payload?: EventModel;
-}) => {
-  console.log(token);
+  payload?: string;
+}): Promise<{ hash: string } | undefined> {
   let res = await fetch('http://localhost:4000/user_medicines', {
     method: method,
     headers: {
       'Content-Type': 'application/json',
       authorization: `Bearer ${token}`,
     },
-    body: payload ? JSON.stringify(payload) : undefined,
+    body: payload ? payload : undefined,
   });
-  return res;
-};
+  if (res.ok) {
+    return res.json();
+  }
+}

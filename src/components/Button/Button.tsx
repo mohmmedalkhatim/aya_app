@@ -1,7 +1,7 @@
 import React, { forwardRef } from "react";
 
 type Variant = "primary" | "secondary" | "ghost" | "danger";
-type Size = "sm" | "md" | "lg";
+type Size = "sm" | "md" | "lg" | "action";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: Variant;
@@ -22,7 +22,7 @@ const variants: Record<Variant, string> = {
   secondary:
     "bg-gray-200 text-gray-900 hover:bg-gray-300 active:bg-gray-400 focus-visible:ring-gray-400",
   ghost:
-    "bg-transparent text-gray-900 hover:bg-gray-100 active:bg-gray-200 focus-visible:ring-gray-300",
+    "bg-transparent text-gray-900 hover:bg-gray-200/80 active:bg-gray-300 focus-visible:ring-gray-300",
   danger:
     "bg-red-500 text-white hover:bg-red-600 active:bg-red-700 focus-visible:ring-red-500",
 };
@@ -31,6 +31,7 @@ const sizes: Record<Size, string> = {
   sm: "h-8 px-3 text-sm",
   md: "h-10 px-4 text-sm",
   lg: "h-12 px-6 text-base",
+  action:"p-2 rounded-full",
 };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -53,7 +54,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           baseStyles,
           variants[variant],
           sizes[size],
-          "relative",
+          "relative cursor-pointer",
           className
         )}
         disabled={disabled || loading}
