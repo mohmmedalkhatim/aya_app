@@ -57,7 +57,7 @@ const SIZE_CLASSES: Record<Size, string> = {
 };
 
 const VARIANT_CLASSES: Record<Variant, string> = {
-  default: 'border-gray-300 focus:border-blue-500',
+  default: 'border-gray-300 focus:border-blue-500 ',
   filled: 'bg-gray-50 focus:bg-white border-transparent',
   underline: 'border-x-0 border-t-0 border-b-2 rounded-none'
 };
@@ -183,6 +183,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       border
       outline-none
       transition
+       hover:cursor-text hover:ring-2 hover:ring-sky-400
       ${SIZE_CLASSES[size]}
       ${VARIANT_CLASSES[variant]}
       ${disabled ? 'bg-gray-100 text-gray-400' : ''}
@@ -193,7 +194,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className={fullWidth ? 'w-full' : ''} >
         {label && (
-          <label className="text-sm flex 0 -translate-y-1 translate-x-2 font-medium relative">
+          <label className="text-sm flex  -translate-y-3 translate-x-2 font-medium relative">
             {isPassword && (
               <div
                 className="flex items-center justify-center text-gray-500"

@@ -1,5 +1,8 @@
-use sea_orm::Schema;
-use sea_orm_migration::prelude::*;
+use crate::entities::records;
+use sea_orm_migration::{
+    prelude::*,
+    sea_orm::Schema,
+};
 
 #[derive(DeriveMigrationName)]
 pub struct Migration;
@@ -9,14 +12,16 @@ impl MigrationTrait for Migration {
     async fn up(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         // Replace the sample below with your own migration scripts
         let backend = manager.get_database_backend();
-        let _ = Schema::new(backend);
-        Ok(())
+        let schema = Schema::new(backend);
+        manager
+            .create_table(schema.create_table_from_entity(records::Entity))
+            .await
     }
 
-    async fn down(&self, _manager: &SchemaManager) -> Result<(), DbErr> {
+    async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         // Replace the sample below with your own migration scripts
-        Ok(())
+        manager
+            .drop_table(Table::drop().table(records::Entity).to_owned())
+            .await
     }
 }
-
-

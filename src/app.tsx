@@ -13,12 +13,12 @@ function App() {
   let location = useLocation()
   useEffect(() => {
     const isAuthPage = location.pathname === "/sign_in"
-    if (access_token == "" && !isAuthPage) {
+    if (access_token == "" && !isAuthPage ) {
       navigate("/sign_in", { replace: true, viewTransition: true })
     } else if (access_token !== "" && isAuthPage) {
       navigate("/", { replace: true, viewTransition: true })
     }
-  }, [access_token, location.pathname])
+  }, [access_token])
   return (<>
     <Header />
     <Outlet />

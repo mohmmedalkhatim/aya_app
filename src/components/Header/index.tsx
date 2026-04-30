@@ -59,6 +59,10 @@ function Header(props: Header_Props) {
   let [loading, setLoading] = useState(false)
   let [Error, setError] = useState("")
   let setData = useStore(state => state.setData)
+  let [profile, setProfile] = useState(false);
+  useEffect(() => {
+    location.pathname == "/profile" ? setProfile(true) : setProfile(false)
+  }, [location])
   useEffect(dataFetch(access_token, setData, setLoading, setError), [keys])
   return (
     <header hidden={access_token == ""} className={`border-b py-4 text-sm h-20 pl-4  items-center  top-0 w-full bg-white `} {...props}>
@@ -66,28 +70,31 @@ function Header(props: Header_Props) {
         {loading ? <IconCloudDataConnection /> : Error !== "" ? <IconCloudOff /> : <IconCloudCheck />}
       </div>
       {
-        location.pathname !== "/profile" ?
-          <div>
-            <div className='flex md:hidden content items-center justify-between gap-4 '>
-              <div className='flex gap-4 items-center'>
-                <div>
-                  <h5>{date > 12 ? "Good eveing" : "Good morning"}</h5>
-                  <div className='text-gray-400/80'>{name}</div>
-                </div>
+        !profile &&
+        <div>
+          <div className='flex md:hidden content items-center justify-between gap-4 '>
+            <div className='flex gap-4 items-center'>
+              <div>
+                <h5>{date > 12 ? "Good eveing" : "Good morning"}</h5>
+                <div className='text-gray-400/80'>{name}</div>
               </div>
-              <Link className='bg-sky-400 rounded-full p-2 cursor-pointer' viewTransition to={"/profile"}>
-                <IconUser color='white' />
-              </Link>
             </div>
-          </div> :
-          <div className='h-full w-full flex items-center'>
-            <Button variant="secondary" className='bg-white' onClick={(e) => { e.preventDefault(); navigate("/", { viewTransition: true }) }}>
-              <IconArrowLeft size={"1.2rem"} />
-              <Heading>
-                Dashboard
-              </Heading>
-            </Button>
+            <Link className='bg-sky-400 rounded-full p-2 cursor-pointer' viewTransition to={"/profile"}>
+              <IconUser color='white' />
+            </Link>
           </div>
+        </div>
+      }
+      {
+        profile &&
+        <div className='h-full w-full flex items-center'>
+          <Button variant="ghost" onClick={(e) => { e.preventDefault(); navigate("/", { viewTransition: true }) }}>
+            <IconArrowLeft size={"1.2rem"} />
+            <Heading>
+              Dashboard
+            </Heading>
+          </Button>
+        </div>
       }
     </header>
   );

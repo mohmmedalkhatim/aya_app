@@ -161,11 +161,11 @@ const EventForm: React.FC<EventFormProps> = ({
               return;
             }
             return (
-              <div className='flex items-center'>
+              <div className='flex items-center' key={index}>
 
                 <div className='grow'>
                   <TimePicker
-                    onChange={(e) => handleTimedsChange(index + 1, e)}
+                    onChange={(e) => handleTimedsChange(index, e)}
                     value={time}
                   />
                 </div>

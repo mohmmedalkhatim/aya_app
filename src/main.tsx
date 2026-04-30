@@ -2,15 +2,14 @@ import client from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
 import { app_router } from "./routers";
 import { load, Store } from '@tauri-apps/plugin-store';
-import { Keys, useStore } from "./context";
-import { getPassword, getSecret, setSecret } from "tauri-plugin-keyring-api"
+import { useStore } from "./context";
+import { getPassword } from "tauri-plugin-keyring-api"
 import { hostname } from "@tauri-apps/plugin-os";
-import {  schedule } from "./schadule";
 
 // Boot sequence - runs once, in parallel with the UI rendering
 Promise.all([initDetector(), initOcr()])
-  .then(() => console.log("[AYA] On-device AI ready"))
-  .catch(err => console.error("[AYA] AI init failed:", err));
+    .then(() => console.log("[AYA] On-device AI ready"))
+    .catch(err => console.error("[AYA] AI init failed:", err));
 let root = client.createRoot(document.getElementById("root") as HTMLDivElement);
 
 export let storage: Store;
@@ -19,6 +18,8 @@ import { useEffect } from "react";
 import Lenis from "@studio-freight/lenis";
 import { initDetector } from "./lib/detector";
 import { initOcr } from "./lib/ocr";
+import { schedule } from "./schedule";
+import { medicition_tracker } from "./medicition_tracker";
 
 
 function App() {
@@ -48,7 +49,7 @@ function App() {
 (async () => {
     let res = await load("storage");
     storage = res;
-
+    await medicition_tracker()
     let name = await hostname() as string;
 
     await getPassword("aya.app", name).then((key) => {
@@ -59,6 +60,7 @@ function App() {
     await schedule()
     root.render(<App />);
 })();
+
 
 
 

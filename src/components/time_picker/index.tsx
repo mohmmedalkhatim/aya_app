@@ -1,3 +1,4 @@
+import { IconChevronDown } from "@tabler/icons-react";
 import dayjs from "dayjs"
 import { number } from "motion/react";
 import { useEffect, useRef, useState } from "react"
@@ -30,19 +31,23 @@ function TimePicker(props: TimePicker) {
     useEffect(() => {
         let temp = dayjs().startOf("D").add(Number(hour), "h").add(Number(Minent), "m").add(intervel == "PM" ? 12 : 0, "h")
         setDate(temp.format("HH:mm"))
-        console.log(temp.format())
         props.onChange(temp.format())
     }, [hour, Minent, intervel])
     return (
-        <div className="relative">
+        <div className="relative h-12">
             {props.label && (
                 <label className="text-sm flex 0 -translate-y-1 translate-x-2 font-medium relative">
 
                     {props.label}
                 </label>
             )}
-            <div onClick={() => setIsOpen(true)} className="focus:border-sky-400 p-3 focus:border-2 border rounded-md cursor-pointer">
-                {date + " " + intervel}
+            <div onClick={() => setIsOpen(prv=>(!prv))} className="focus:border-sky-400  px-3 flex items-center justify-between h-full focus:border-2 border rounded-md cursor-pointer ring-sky-400 hover:ring-2 transition-all">
+                <div>
+                    {date + " " + intervel}
+                </div>
+                <div>
+                    <IconChevronDown size={"1.2rem"}/>
+                </div>
             </div>
             {/* Timepicker */}
             {IsOpen &&

@@ -1,11 +1,9 @@
 // src/lib/detector.ts
 import * as tf from "@tensorflow/tfjs-core";
 import "@tensorflow/tfjs-backend-webgl";
-// loaded dynamically — tfjs-tflite is excluded from the Vite bundle
-type TFLite = typeof import("@tensorflow/tfjs-tflite");
-let tflite: TFLite;
 import { resolveResource } from "@tauri-apps/api/path";
 import { convertFileSrc } from "@tauri-apps/api/core";
+import { loadTFLiteModel, TFLiteModel } from "@tensorflow/tfjs-tflite";
 
 export type ROIClass = "brand_panel" | "generic_strip" | "dosage_line"; 
 
@@ -15,15 +13,14 @@ export interface DetectedROI {
     // Normalised coords (0-1) relative to original image
     x: number; y: number; w: number; h: number;
 }
-let model: tflite.TFLiteModel | null = null; 
+let model: TFLiteModel | null = null; 
 const CLASS_NAMES: ROIClass[] = ["brand_panel", "generic_strip", "dosage_line"];
 
 export async function initDetector(): Promise<void> {
-    tflite = await import("@tensorflow/tfjs-tflite");
     const path = await resolveResource("resources/medicine_roi_int8.tflite");
     await tf.setBackend("webgl");
     await tf.ready();
-    model = await tflite.loadTFLiteModel(convertFileSrc(path));
+    model = await loadTFLiteModel(convertFileSrc(path));
 }
 
 export async function detectROIs(

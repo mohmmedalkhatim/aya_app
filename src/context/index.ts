@@ -2,16 +2,14 @@ import { create } from 'zustand';
 import { storage } from '../main';
 import { EventModel } from '../components/event_form';
 import { fetch } from '@tauri-apps/plugin-http';
-import bcrypt from 'crypto-js';
+import crypto from 'crypto-js';
 import { v7 } from 'uuid';
 import { useKey } from 'react-use';
-import {
-  getPassword,
-  getSecret,
-  setPassword,
-  setSecret,
-} from 'tauri-plugin-keyring-api';
+import { getPassword, setPassword } from 'tauri-plugin-keyring-api';
+import soldium from 'libsodium-wrappers';
 import { data } from 'react-router-dom';
+import { decrypt } from './encryption_logic/decrypt_fun';
+import { encrypt } from './encryption_logic/encrypt_fun';
 
 export type Data = {
   dosages: EventModel[];
@@ -23,6 +21,8 @@ export type Keys = {
 export interface medications_ui_state {
   data: Data;
   keys: Keys;
+  medicationDialogState: boolean;
+  setDialogState: (state: boolean) => void;
   user_info: { name: string; email: string };
   onLine: boolean;
   setInfo: (keys: Keys) => void;
@@ -40,76 +40,68 @@ export let useStore = create<medications_ui_state>(set => ({
     email: '',
     name: '',
   },
+  medicationDialogState: false,
   keys: {
     access_token: '',
   },
-  setData: data => {
-    set({ data });
-  },
+  setDialogState: state => set({ medicationDialogState: state }),
+  setData: data => set({ data }),
   setInfo: keys => {
     set({ keys });
   },
 
   init: async token => {
     let data = await storage.get<Data>('information');
-    if (data) {
-      set(state => ({
-        data: data,
-      }));
-    }
 
-    let res = await apiCall({ token });
-    if (res) {
-      let payload = await dencrpyt(res.hash);
-      storage.set('information', payload);
+    if (!data) {
+      await storage.set('information', { dosages: [] });
+    } else {
+      let name = '';
       set(state => {
-        if (state.onLine) {
-          encrpyt(state.data).then(res => {
-            apiCall({ method: 'POST', token, payload: res });
-          });
-        }
+        name = state.user_info.name;
         return {
-          data: payload,
+          data: data,
         };
       });
+      try {
+        let encrypted_text = await encrypt(data, name);
+        let res = await apiCall({
+          token,
+          method: 'PUT',
+          payload: encrypted_text,
+        });
+        let info = await decrypt(String(encrypted_text), name);
+      } catch (err) {
+      }
     }
   },
   add_med: async (payload, token) => {
     let data = await storage.get<Data>('information');
+    let name = '';
+
     set(state => {
       storage.set('information', {
         dosages: [...state.data?.dosages, payload],
       });
+      name = state.user_info.name;
       return {
         ...state,
         data: { dosages: [...state.data?.dosages, payload] },
       };
     });
+    if (data) {
+      let res = await apiCall({
+        token,
+        method: 'PUT',
+        payload: await encrypt(data, name),
+      });
+      console.log(res);
+      if (res?.hash && res?.name) {
+        let info = await decrypt(res?.hash, res?.name);
+      }
+    }
   },
 }));
-let dencrpyt = async (payload: String): Promise<Data> => {
-  let name = useStore.getState().user_info.name;
-  let stored_key = await getPassword('encryption_key', name);
-  let key = '';
-  if (stored_key) {
-    key = stored_key.toString();
-  } else {
-    let uuid = v7();
-    setPassword('encryption_key', name, uuid);
-  }
-  return JSON.parse(
-    bcrypt.AES.decrypt(JSON.stringify(payload), key).toString()
-  );
-};
-let encrpyt = async (payload: Data) => {
-  let name = useStore.getState().user_info.name;
-  let stored_key = await getPassword('encryption_key', name);
-  if (stored_key) {
-    return JSON.stringify({
-      hash: bcrypt.AES.encrypt(JSON.stringify(payload), stored_key).toString(),
-    });
-  }
-};
 
 async function apiCall ({
   method = 'GET',
@@ -119,7 +111,9 @@ async function apiCall ({
   method?: 'POST' | 'PUT' | 'GET';
   token: string;
   payload?: string;
-}): Promise<{ hash: string } | undefined> {
+}): Promise<{ hash: string; name: string } | undefined> {
+  if (method == 'PUT' && payload == undefined) return undefined;
+
   let res = await fetch('http://localhost:4000/user_medicines', {
     method: method,
     headers: {

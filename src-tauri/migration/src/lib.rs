@@ -1,7 +1,7 @@
 pub use sea_orm_migration::prelude::*;
 
 mod init_the_database;
-
+pub mod entities;
 pub struct Migrator;
 
 #[async_trait::async_trait]

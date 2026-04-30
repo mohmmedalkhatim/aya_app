@@ -12,8 +12,7 @@
       "icons/aya_app.ico"
     ],
     "resources": {
-      "resources/medicine_roi_int8.tflite": "resources/",
-      "resources/tessdata/eng.traineddata": "resources/tessdata/"
+
     }
   },
   "productName": "aya_app",

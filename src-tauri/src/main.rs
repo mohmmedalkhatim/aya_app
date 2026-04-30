@@ -33,7 +33,7 @@ async fn main() {
     builder
         .plugin(tauri_plugin_store::Builder::new().build())
         .plugin(tauri_plugin_shell::init())
-        .invoke_handler(tauri::generate_handler![app::start_oauth_server])
+        .invoke_handler(tauri::generate_handler![app::start_oauth_server,app::records_control])
         .setup(|app| {
             let database_url = app
                 .app_handle()
@@ -49,9 +49,17 @@ async fn main() {
             let shadow = database.clone();
             tauri::async_runtime::spawn(async move {
                 shadow.lock_arc().await.db =
-                    Some(app::database_connection(database_url.display().to_string()).await);
-                let _ = migration::Migrator::up(&shadow.lock_arc().await.db.clone().unwrap(), None)
+                Some(app::database_connection(database_url.display().to_string()).await);
+                let res = migration::Migrator::up(&shadow.lock_arc().await.db.clone().unwrap(), None)
                     .await;
+                match res {
+                    Ok(())=>{
+                        println!("the magration has compeleted succfully")
+                    }
+                    Err(err)=>{
+                        println!("{}",err.to_string())
+                    }
+                }
             });
             app.manage(database);
 
