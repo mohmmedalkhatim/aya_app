@@ -77,10 +77,10 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
                 ${sizeClasses.checkbox}
                 rounded-sm
                 border
-                disabled:cursor-not-allowed disabled:bg-gray-100 disabled:border-gray-300
+                disabled:cursor-not-allowed disabled:bg-sky-100 disabled:border-sky-300
                 ${error 
                   ? 'border-red-500 focus:ring-red-500' 
-                  : 'border-gray-300'
+                  : 'border-sky-300'
                 }
                 ${className || ''}
               `}
@@ -97,7 +97,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
                   className={`
                     font-medium
                     ${sizeClasses.label}
-                    ${disabled ? 'text-gray-400' : 'text-gray-700'}
+                    ${disabled ? 'text-sky-400' : 'text-sky-700'}
                     ${error ? 'text-red-700' : ''}
                     cursor-${disabled ? 'not-allowed' : 'pointer'}
                   `}
@@ -111,7 +111,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
                   id={descriptionId}
                   className={`
                     ${size === 'xs' || size === 'sm' ? 'text-xs' : 'text-sm'}
-                    ${disabled ? 'text-gray-400' : 'text-gray-500'}
+                    ${disabled ? 'text-sky-400' : 'text-sky-500'}
                   `}
                 >
                   {description}
@@ -128,7 +128,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             className={`
               mt-1
               ${size === 'xs' || size === 'sm' ? 'text-xs' : 'text-sm'}
-              ${error ? 'text-red-600' : 'text-gray-500'}
+              ${error ? 'text-red-600' : 'text-sky-500'}
             `}
           >
             {error || helperText}

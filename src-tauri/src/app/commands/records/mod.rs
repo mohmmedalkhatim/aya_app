@@ -36,7 +36,10 @@ pub async fn records_control(
         "update_one" => match payload.date {
             Some(id) => match payload.data {
                 Some(record) => match update_record(record, id, &db).await {
-                    Ok(_item) => Ok(()),
+                    Ok(_item) => {
+                        println!("{}",_item);
+                        Ok(())
+                    },
                     Err(err) => Err(err),
                 },
                 None => Err("you have to add data to the payload".to_string()),

@@ -1,15 +1,15 @@
 import dayjs from "dayjs"
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useAsync, useInterval } from "react-use";
 import { useStore } from "../../../../context";
 import { Heading } from "../../../../components/heading";
-import { IconEdit, IconSwitch } from "@tabler/icons-react";
+import { IconBox, IconEdit, IconSwitch } from "@tabler/icons-react";
 import { Button } from "../../../../components/Button/Button";
-import { div } from "@tensorflow/tfjs-core";
 import { Record } from "../../../../medicition_tracker";
+import Checkbox from "../../../../components/checkbox";
 
 
-function MedicationLog({ record }: { record: Record }) {
+function MedicationLog({ record, setRecord }: { record: Record, setRecord: Dispatch<SetStateAction<Record | undefined>> }) {
   let [hour, setHour] = useState((25 - dayjs().hour()));
   let [minute, setMinute] = useState(dayjs().minute());
   let setOpen = useStore(state => state.setDialogState)
@@ -17,8 +17,6 @@ function MedicationLog({ record }: { record: Record }) {
   let token = useStore((state) => state.keys.access_token)
   let init = useStore((state) => state.init)
   useAsync(async () => {
-    
-    console.log(record)
     await init(token)
   }, [])
   useInterval(() => {
@@ -45,8 +43,8 @@ function MedicationLog({ record }: { record: Record }) {
                 </Button>
               </div>}
             {
-              Medications?.map(
-                (med) => {
+              record.medictions_records.list?.map(
+                (med, med_index) => {
                   return (
                     <div className="border flex justify-between items-center flex-col shadow gap-1  w-full px-4 py-4 border-l-5 rounded bg-white border-l-black">
                       <div className="flex justify-between items-center w-full px-2 py-2 ">
@@ -62,17 +60,23 @@ function MedicationLog({ record }: { record: Record }) {
                       </div>
                       {
                         (med.times.map((item, index) => {
-                          let date = dayjs(item)
+                          let date = dayjs(item.time)
                           return (
                             <div key={med.name + item + index} className="flex justify-between items-center w-full px-2 py-2 ">
                               <div>
                                 {date.format("hh:mm A")}
                               </div>
-                              <Button
-                                variant="ghost"
-                                className="fixed top-0 right-0 h-fixed"
-                                size="action">
-                                <IconSwitch />
+                              <Button variant="ghost" size="action" >
+                                <Checkbox size="xs"  checked={item.taken} onClick={() => {
+                                  setRecord(prv => {
+                                    if (prv) {
+                                      let prev = structuredClone(prv)
+                                      prev.medictions_records.list[med_index].times[index].taken = !item.taken
+                                      console.log(prev)
+                                      return prev
+                                    }
+                                  })
+                                }} />
                               </Button>
                             </div>
                           )

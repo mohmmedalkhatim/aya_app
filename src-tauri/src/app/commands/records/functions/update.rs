@@ -17,7 +17,7 @@ pub async fn update_record(
     let update = Entity::update(ActiveModel {
         id: Set(model.id),
         date: Set(payload.date),
-        mediction_record: Set(payload.medictions_records),
+        medictions_records: Set(payload.medictions_records),
         sugar_levels: Set(payload.sugar_levels),
     })
     .exec(db)

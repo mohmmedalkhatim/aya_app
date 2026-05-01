@@ -10,7 +10,7 @@ pub async fn create_record(
 ) -> Result<i32, String> {
     let active_value = ActiveModel {
         date: Set(payload.date),
-        mediction_record: Set(payload.medictions_records),
+        medictions_records: Set(payload.medictions_records),
         sugar_levels: Set(payload.sugar_levels),
         ..Default::default()
     };
